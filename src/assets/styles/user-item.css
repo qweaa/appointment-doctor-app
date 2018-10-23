@@ -1,0 +1,17 @@
+/*
+    左边是头像或图片
+    中间是上下两行，第一个重要，第二行介绍
+    右边是箭头
+    PS：需要修改的可利用css优先级修改
+*/
+.flex-center{display: flex; justify-content: center; align-items: center;}
+.user-item .item{height: 1.56rem; justify-content: space-between; border-bottom: 1px solid #E5E5E5;}
+.user-item .item:last-child{border-bottom: none;}
+.user-item .left{width: 1.56rem;}
+.user-item .left img{width: 1rem; height: 1rem; border-radius: 50%;}
+.user-item .middle{width: 4.94rem;}
+.user-item .middle h5{font-size: .32rem; color: #222; height: .6rem; justify-content: flex-start;}
+.user-item .middle h5 span{padding-left: .2rem; padding-right: .15rem; line-height: .36rem; border: 1px solid #007DB2; color: #007DB2; font-size: .24rem; border-radius: .06rem; margin-left: .3rem;}
+.user-item .middle p{width: 100%; font-size: .24rem; color: #999;}
+.user-item .right{width: 1rem;}
+.user-item .right img{width: .12rem; height: .21rem;}
