@@ -90,7 +90,7 @@ function ajax(type,async,url,data,onsuccess,onfail, allurl){
             page:router.currentRoute.fullPath
         },
         timeout:5000, //超时时间
-        dataType:'json', //返回的数据格式：
+        // dataType:'json', //返回的数据格式：
         success:function(data,textStatus,jqXHR){
             console.log(data)
             Vue.$vux.loading.hide()
@@ -175,23 +175,23 @@ function formDataAjax(type,async,url,formData,tip,onsuccess){
 
 //获取推荐服务的门店
 function getRecommend(province,city,lng,lat,onsuccess){
-    // ajax('GET',true,config.getRecommend,{
-    //     province: province,
-    //     City: city,
-    //     Longitude: lng,
-    //     Latitude: lat
-    // },onsuccess,function(){
-    //     console.log("第二次请求推荐门店")
-    //     ajax('GET',true,config.getRecommend,{
-    //         province: province,
-    //         City: city,
-    //         Longitude: lng,
-    //         Latitude: lat
-    //     },onsuccess,null,'/home/getRecommend')
-    // },'/home/getRecommend')
-    axios.get('/home/getRecommend').then(res=>{
-        if(onsuccess) onsuccess(res.data)
-    })
+    ajax('GET',true,config.getRecommend,{
+        province: province,
+        City: city,
+        Longitude: lng,
+        Latitude: lat
+    },onsuccess,function(){
+        console.log("第二次请求推荐门店")
+        ajax('GET',true,config.getRecommend,{
+            province: province,
+            City: city,
+            Longitude: lng,
+            Latitude: lat
+        },onsuccess,null,'/home/getRecommend')
+    },'/home/getRecommend')
+    // axios.get('/home/getRecommend').then(res=>{
+    //     if(onsuccess) onsuccess(res.data)
+    // })
 }
 //公告
 function getNotcomList(onsuccess){

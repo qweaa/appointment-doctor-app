@@ -15,7 +15,11 @@ Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 
-import './utils/mock'
+
+import './mock'
+import request from './utils/axios'
+
+Vue.prototype.$api = request
 
 
 require('es6-promise').polyfill() //Promise 兼容低版本浏览器

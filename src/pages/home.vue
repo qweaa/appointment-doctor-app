@@ -169,21 +169,22 @@ export default {
       console.log(val);
       if (val.state) {
         pointLocal = new BMap.Point(val.lng, val.lat);
-        getRecommend(val.province, val.city, val.lng, val.lat, function(data) {
-          for (let i of data) {
-            pointStore = new BMap.Point(i.Longitude, i.Latitude);
-            distance = parseFloat(
-              BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
-            );
-            if (distance > 1000) {
-              distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
-            } else {
-              distance = distance + "米";
-            }
-            i.distance = distance;
-          }
-          that.storeList = data;
-        });
+        this.$api.getRecommend()
+        // getRecommend(val.province, val.city, val.lng, val.lat, function(data) {
+        //   for (let i of data) {
+        //     pointStore = new BMap.Point(i.Longitude, i.Latitude);
+        //     distance = parseFloat(
+        //       BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
+        //     );
+        //     if (distance > 1000) {
+        //       distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
+        //     } else {
+        //       distance = distance + "米";
+        //     }
+        //     i.distance = distance;
+        //   }
+        //   that.storeList = data;
+        // });
       }
     },
     inSearch() {
@@ -210,23 +211,24 @@ export default {
           distance, //距离
           local = this.$store.state.local.local;
       var pointLocal = new BMap.Point(local.lng, local.lat);
-      getRecommend(local.province, local.city, local.lng, local.lat, function(
-        data
-      ) {
-        for (let i of data) {
-          pointStore = new BMap.Point(i.Longitude, i.Latitude);
-          distance = parseFloat(
-            BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
-          );
-          if (distance > 1000) {
-            distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
-          } else {
-            distance = distance + "米";
-          }
-          i.distance = distance;
-        }
-        that.storeList = data;
-      });
+      this.$api.getRecommend()
+      // getRecommend(local.province, local.city, local.lng, local.lat, function(
+      //   data
+      // ) {
+      //   for (let i of data) {
+      //     pointStore = new BMap.Point(i.Longitude, i.Latitude);
+      //     distance = parseFloat(
+      //       BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
+      //     );
+      //     if (distance > 1000) {
+      //       distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
+      //     } else {
+      //       distance = distance + "米";
+      //     }
+      //     i.distance = distance;
+      //   }
+      //   that.storeList = data;
+      // });
     }
     // 获取轮播图
     // this.$http
