@@ -3,10 +3,15 @@ const Mock = require('mockjs');
 // 获取 mock.Random 对象
 const Random = Mock.Random;
 
-Mock.mock('/home/getRecommend', _=>{
-    let res = [];
+import {response} from './config'
+
+Mock.mock('/home/getRecommend', req=>{
+    console.log("传入参数：",req)
+    
+    let res = response,
+        list = []
     for(let i=0; i<4; i++){
-        res.push({
+        list.push({
             Address:"棠下小区",
             Area:"天河区",
             City:"广州市",
@@ -18,5 +23,7 @@ Mock.mock('/home/getRecommend', _=>{
             ShopName:"鸿亿小区东风店",
         })
     }
+    res.data = list
+    res.messages = '取推荐医师列表成功'
     return res
 })
