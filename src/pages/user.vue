@@ -2,16 +2,16 @@
   <div class="user">
     <div class="top">
       <router-link to="/user/afei/personalSettings" class="editingInfo">
-        <img :src="UserInfo.F_HeadIcon" alt="">
+        <img :src="UserInfo.avatarUrl" alt="">
         <div>
-          <h3>{{UserInfo.F_NickName}}</h3>
+          <h3>{{UserInfo.NickName}}</h3>
           <p>查看并编辑个人资料</p>
         </div>
       </router-link>
-      <div>
+      <!-- <div>
         <p>余额<span>{{UserInfo.ValidMoney}}元</span></p>
         <router-link to="/user/afei/voucherCenter">充值</router-link>
-      </div>
+      </div> -->
     </div>
     <group id="menus">
       <cell v-for="(item,index) of menus" :key="index" :title="item.title" :is-link='true' :link="item.link">
@@ -44,36 +44,54 @@ export default {
           title: "评价管理",
           link: "/myEvaluate",
           icon: require("../assets/images/me_icon_evaluate.png")
+        },
+        {
+          title: "我的病历",
+          link: "/myEvaluate",
+          icon: require("../assets/images/me_icon_register.png")
         }
       ],
       UserInfo: {}
     };
   },
+  methods: {
+    getStudentModel(id){
+      let stuID = id || this.studentID || ''
+      this.$api.getStudentModel(stuID).then(data=>{
+        if(data.data) this.UserInfo = data.data
+      })
+    },
+  },
   mounted() {
-    if (window.localStorage.getItem("userInfo")) {
-      console.log("userInfouserInfouserInfo完整URL,", this.$route.fullPath);
-      this.UserInfo = JSON.parse(window.localStorage.getItem("userInfo"));
-    } else {
-      // 获取登录人信息
-      this.$http
-        .get("/User/GetUserDetail")
-        .then(res => {
-          console.log("用户信息",res)
-          if (res.data.state === "error") {
-            console.error(res.data.message);
-          } else {
-            res.data.data.ValidMoney = formatMoney(res.data.data.ValidMoney);
-            this.UserInfo = res.data.data
-            window.localStorage.setItem(
-              "userInfo",
-              JSON.stringify(res.data.data)
-            );
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    if(window.sessionStorage.getItem('studentID')){
+      this.studentID = window.sessionStorage.getItem('studentID')
+      this.getStudentModel()
     }
+
+    // if (window.localStorage.getItem("userInfo")) {
+    //   console.log("userInfouserInfouserInfo完整URL,", this.$route.fullPath);
+    //   this.UserInfo = JSON.parse(window.localStorage.getItem("userInfo"));
+    // } else {
+    //   // 获取登录人信息
+    //   this.$http
+    //     .get("/User/GetUserDetail")
+    //     .then(res => {
+    //       console.log("用户信息",res)
+    //       if (res.data.state === "error") {
+    //         console.error(res.data.message);
+    //       } else {
+    //         res.data.data.ValidMoney = formatMoney(res.data.data.ValidMoney);
+    //         this.UserInfo = res.data.data
+    //         window.localStorage.setItem(
+    //           "userInfo",
+    //           JSON.stringify(res.data.data)
+    //         );
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // }
   }
 };
 </script>

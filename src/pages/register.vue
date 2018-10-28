@@ -6,10 +6,13 @@
           <img src="../assets/images/logo.png" alt="头像">
       </div>
       <group>
-        <x-input type="number" class="weui-vcode" v-model="studentID"  @on-blur="checkStudentID" placeholder="请输入学号"></x-input>
+        <x-input title="" :type="'number'" class="weui-vcode" v-model="studentID"  @on-blur="checkStudentID" placeholder="请输入学号"></x-input>
       </group>
       <group>
-        <x-input type="password" class="weui-vcode" v-model="password" placeholder="请输入密码"></x-input>
+        <x-input title="" type="password" class="weui-vcode" v-model="password"  @on-blur="checkPassword" placeholder="请输入密码"></x-input>
+      </group>
+      <group>
+        <x-input title="" type="password" class="weui-vcode" v-model="repeatPassword"  @on-blur="checkRepeat" placeholder="请确认密码"></x-input>
       </group>
       <!-- <group>
         <x-input title="" class="weui-vcode" v-model="phone"  @on-blur="checkPhone" placeholder="请输入手机号码"></x-input>
@@ -21,12 +24,12 @@
         </x-input>
       </group> -->
       <div style="padding:.5rem 0;">
-        <x-button type="warn" :class="{unfinish:isUnfinish}" :disabled="isUnfinish" @click.native="login">登录</x-button>
+        <x-button type="warn" :class="{unfinish:isUnfinish}" :disabled="isUnfinish">注册</x-button>
       </div>
       <div style="padding:.5rem 0;">
         <p class="goto">
-          <span>还未有账号？</span>
-          <router-link class="color-origin" to="/register">立即注册</router-link>
+          <span>已有账号，</span>
+          <router-link class="color-origin" to="/login">登陆</router-link>
         </p>
       </div>
     </div>
@@ -50,63 +53,20 @@ export default {
     return {
       headerData: {
         back: true,
-        title: "登录",
+        title: "注册",
       },
       phone: '',
+      count: '',
+      code:'',
 
       studentID: '',
       password: '',
-
-      count: '',
-      code:'',
+      repeatPassword: '',
       timer: null,
       show: true
     };
   },
   methods: {
-    login(){
-      console.log(123456)
-      if(this.studentID === ''){
-        this.$vux.toast.text("请填写学号", "middle");
-        return;
-      }
-      if(this.password === ''){
-        this.$vux.toast.text("请输入密码", "middle");
-        return;
-      }
-      this.$api.login({
-        studentID: this.studentID,
-        password: this.password,
-      }).then(data=>{
-        console.log("登陆then：",data)
-        if(data.data){
-          this.$vux.toast.show({
-            text: '登陆成功',
-            type: 'success'
-          })
-          window.sessionStorage.setItem('studentID',this.studentID)
-          setTimeout(()=>{
-            this.$router.push('/')
-          },1000)
-        }else{
-          this.$vux.toast.text(data.messages, "middle");
-        }
-      }).catch(data=>{
-        console.log("登陆：",data)
-      })
-    },
-    checkStudentID(){
-      if(this.studentID !== '' && this.studentID.length !== 10){
-        this.$vux.toast.text("请检查学号", "middle");
-        return;
-      }
-    },
-    // checkPassword(){
-    //   if(this.password === ''){
-    //     this.$vux.toast.text("请输入密码", "middle");
-    //     return;
-    //   }
-    // },
     checkPhone() {
       if (this.phone == "") {
         this.$vux.toast.text("请输入手机号码", "middle");
@@ -114,6 +74,34 @@ export default {
       } else if (!regexp.phone(this.phone)) {
         this.$vux.toast.text("请输入正确的手机号码", "middle");
         return;
+      }
+    },
+    checkStudentID(){
+      if(this.studentID !== ""){
+        if(this.studentID.length !== 10){
+          this.$vux.toast.text("请检查学号", "middle");
+          return;
+        }
+      }
+    },
+    checkPassword(){
+      if(this.password !== ""){
+        if(this.password.length < 6 || this.password.length > 20){
+          this.$vux.toast.text("密码长度应在6-20位间", "middle");
+          return;
+        }
+        if(/[\[\]'":\.\{\}*&%$\\\|\/><#!~,+\-\?]/g.test(this.password)){
+          this.$vux.toast.text("密码含有非法支付，请修改", "middle");
+          return;
+        }
+      }
+    },
+    checkRepeat(){
+      if(this.repeatPassword !== ''){
+        if(this.password !== this.repeatPassword){
+          this.$vux.toast.text("两次密码不相同，请检查", "middle");
+          return;
+        }
       }
     },
     getCode() {
@@ -136,7 +124,7 @@ export default {
   },
   computed:{
     isUnfinish(){
-      return this.password===''||this.studentID===''
+      return this.password===''||this.studentID===''||this.repeatPassword===''
     }
   },
   created(){

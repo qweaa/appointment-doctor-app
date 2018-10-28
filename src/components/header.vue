@@ -64,12 +64,12 @@
                 <div class="header-search" v-if="search">
                     <img src="../assets/images/nav/nav_icon_search.png" alt="">
                     <!-- <span>搜索门店、医师</span> -->
-                    <input type="text" name="search" @keydown.enter="takeSearch()" v-model="searchWord" placeholder="搜索门店、医师" @focus="inSearch">
+                    <input type="text" name="search" @keydown.enter="takeSearch" v-model="searchWord" placeholder="搜索门店、医师" @focus="inSearch">
                 </div>
             </div>
             <div class="right center-flex" @click="share && !searchFocus?showShare():''">
                 <img v-if="share && !searchFocus" src="../assets/images/nav/nav_icon_share.png" alt="">
-                <span class="cancelSearch" v-if='searchFocus' @click.stop="takeSearch()">搜索</span>
+                <span class="cancelSearch" v-if='searchFocus' @click.stop="takeSearch">搜索</span>
             </div>
         </div>
         <!-- 分享弹窗 -->
@@ -202,28 +202,34 @@ export default {
                 if(this.$store.state.local.local.state){
                     var that = this,
                         local = this.$store.state.local.local;
-                    getECAList({
-                        province: local.province,
-                        city: local.city,
-                        lng: local.lng,
-                        lat: local.lat,
-                        keyword: that.searchWord
-                    },function(data){
-                        that.searchList.storeList = []
-                        console.log("门店",data)
-                        that.searchList.storeList = data;
-                    });
-                    getDoctorList({
-                        province: local.province,
-                        city: local.city,
-                        rows: 20,
-                        page: 1,
-                        keyword: that.searchWord
-                    },function(data){
-                        that.searchList.doctorList = []
-                        console.log("医师",data)
-                        that.searchList.doctorList = data;
-                    });
+                    // getECAList({
+                    //     province: local.province,
+                    //     city: local.city,
+                    //     lng: local.lng,
+                    //     lat: local.lat,
+                    //     keyword: that.searchWord
+                    // },function(data){
+                    //     that.searchList.storeList = []
+                    //     console.log("门店",data)
+                    //     that.searchList.storeList = data;
+                    // });
+                    this.$api.getDoctorList(that.searchWord).then(data=>{
+                        if(data.data){
+                            // that.searchList.doctorList = []
+                            that.searchList.doctorList = data.data;
+                        }
+                    })
+                    // getDoctorList({
+                    //     province: local.province,
+                    //     city: local.city,
+                    //     rows: 20,
+                    //     page: 1,
+                    //     keyword: that.searchWord
+                    // },function(data){
+                    //     that.searchList.doctorList = []
+                    //     console.log("医师",data)
+                    //     that.searchList.doctorList = data;
+                    // });
                 }else{
                     this.showToast = true;
                     this.toastText = '定位失败，无法搜索到您身边的门店'
@@ -235,10 +241,16 @@ export default {
             if(this.search && this.$store.state.local.local.state){
                 var local = this.$store.state.local.local,
                     that = this;
-                getRecommend(local.province,local.city,local.lng,local.lat,function(data){
-                    that.searchList.storeList = data;
-                    console.log('getRecommendInHeader',data)
+
+                this.$api.getRecommend().then(data=>{
+                    if(data.data){
+                        that.searchList.storeList = data.data;
+                    }
                 })
+                // getRecommend(local.province,local.city,local.lng,local.lat,function(data){
+                //     that.searchList.storeList = data;
+                //     console.log('getRecommendInHeader',data)
+                // })
             }
         },
     },

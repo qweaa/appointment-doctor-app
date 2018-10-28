@@ -66,10 +66,11 @@
     </swiper><!-- 垂直文字的滚动 END -->
     <!-- 推荐店铺 START -->
     <div class="recommendhead">您好，系统为您推荐的优质服务门店</div>
-    <store-item :storeList="storeList" class="group"></store-item>
+    <!-- <store-item :storeList="storeList" class="group"></store-item> -->
+     <doctor-item :doctorList="doctorList" class="group"></doctor-item> 
     <!-- 推荐店铺 END -->
     <!-- 公告弹窗 -->
-    <popup v-model="trumpePopup" position="left" width="100%" class="trumpePopup">
+    <popup v-model="trumpePopup"  position="left" width="100%" class="trumpePopup">
       <div class="tru-head">公告</div>
       <div class="tru-cont">
         <p>{{trumpeDetail.NoticeContent}}</p>
@@ -86,6 +87,7 @@ import { Swiper, SwiperItem, Popup } from "vux";
 import mFooter from "../components/footer";
 import mHeader from "../components/header";
 import storeItem from "../components/store-item";
+import doctorItem from "../components/doctor-item";
 import { GetQueryString } from "../utils/util";
 const { getRecommend,getNotcomList,testMock } = require("../utils/request");
 export default {
@@ -95,7 +97,8 @@ export default {
     storeItem,
     Swiper,
     SwiperItem,
-    Popup
+    Popup,
+    doctorItem
   },
   data() {
     return {
@@ -106,50 +109,12 @@ export default {
       },
       trumpePopup: false,
       //公告列表
-      trumpetList: [
-        {
-          link: "javascript:",
-          NoticeContent: '义务爱了 完成传奇世界H5-王者归来任务 获得30金币asdf',
-          F_CreatorTime: '2017-12-20 10:16:39'
-        },{
-          link: "javascript:",
-          NoticeContent: '公告二',
-          F_CreatorTime: '2017-12-20 10:16:39'
-        },{
-          link: "javascript:",
-          NoticeContent: '公告三',
-          F_CreatorTime: '2017-12-20 10:16:39'
-        },
-      ],
+      trumpetList: [],
       trumpeDetail: {},
-      storeList: [
-        // {
-        //   Address:"棠下小区",
-        //   Area:"天河区",
-        //   City:"广州市",
-        //   ECAId:"796bc861-c753-4421-83a3-21164ff9e09e",
-        //   F_NickName:"杰6",
-        //   Latitude:23.1200491,
-        //   Longitude:113.3076497,
-        //   Province:"广东省",
-        //   ShopName:"鸿亿小区东风店",
-        // }
-      ],
-      banner: [
-        {
-          //banner Swiper数据
-          url: "javascript:",
-          img: require("../assets/images/tmp/1.jpg")
-        },
-        {
-          url: "javascript:",
-          img: require("../assets/images/tmp/2.jpg")
-        },
-        {
-          url: "javascript:",
-          img: require("../assets/images/tmp/3.jpg")
-        }
-      ]
+      storeList: [],
+      banner: [],
+
+      doctorList: [],
     };
   },
   methods: {
@@ -169,22 +134,23 @@ export default {
       console.log(val);
       if (val.state) {
         pointLocal = new BMap.Point(val.lng, val.lat);
-        this.$api.getRecommend()
-        // getRecommend(val.province, val.city, val.lng, val.lat, function(data) {
-        //   for (let i of data) {
-        //     pointStore = new BMap.Point(i.Longitude, i.Latitude);
-        //     distance = parseFloat(
-        //       BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
-        //     );
-        //     if (distance > 1000) {
-        //       distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
-        //     } else {
-        //       distance = distance + "米";
-        //     }
-        //     i.distance = distance;
-        //   }
-        //   that.storeList = data;
-        // });
+        this.$api.getRecommend().then(data=>{
+          if(data.data){
+            for (let i of data.data) {
+              pointStore = new BMap.Point(i.Longitude, i.Latitude);
+              distance = parseFloat(
+                BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
+              );
+              if (distance > 1000) {
+                distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
+              } else {
+                distance = distance + "米";
+              }
+              i.distance = distance;
+            }
+            that.storeList = data.data;
+          }
+        })
       }
     },
     inSearch() {
@@ -197,12 +163,12 @@ export default {
     }
   },
   mounted() {
-    // document.querySelector('.trumpePopup').addEventListener('touchstart',function(event){
-    //   event.stopPropagation()
-    // })
-    // document.querySelector('.trumpePopup').addEventListener('touchmove',function(event){
-    //   event.stopPropagation()
-    // })
+    document.querySelector('.trumpePopup').addEventListener('touchstart',function(event){
+      event.preventDefault()
+    },false)
+    document.querySelector('.trumpePopup').addEventListener('touchmove',function(event){
+      event.preventDefault()
+    },false)
 
     var that = this;
     if (this.$store.state.local.local.state) {
@@ -211,53 +177,44 @@ export default {
           distance, //距离
           local = this.$store.state.local.local;
       var pointLocal = new BMap.Point(local.lng, local.lat);
-      this.$api.getRecommend()
-      // getRecommend(local.province, local.city, local.lng, local.lat, function(
-      //   data
-      // ) {
-      //   for (let i of data) {
-      //     pointStore = new BMap.Point(i.Longitude, i.Latitude);
-      //     distance = parseFloat(
-      //       BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
-      //     );
-      //     if (distance > 1000) {
-      //       distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
-      //     } else {
-      //       distance = distance + "米";
-      //     }
-      //     i.distance = distance;
-      //   }
-      //   that.storeList = data;
-      // });
+      this.$api.getRecommend().then(data=>{
+        if(data.data){
+          for (let i of data.data) {
+            pointStore = new BMap.Point(i.Longitude, i.Latitude);
+            distance = parseFloat(
+              BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2)
+            );
+            if (distance > 1000) {
+              distance = parseFloat((distance / 1000).toFixed(2)) + "千米";
+            } else {
+              distance = distance + "米";
+            }
+            i.distance = distance;
+          }
+          that.storeList = data.data;
+        }
+      })
     }
+    //取推荐医师列表
+    this.$api.getRecommendDoctor().then(data=>{
+      if(data.data){
+        console.log(data.data)
+        this.doctorList = data.data
+      }
+    })
     // 获取轮播图
-    // this.$http
-    //   .get("/Common/GetSystemBanner", {
-    //   params: {
-    //     ecaid: "00000000-0000-0000-0000-000000000000"
-    //   }
-    // })
-    // .then(res => {
-    //   if (res.data.state === "info") {
-    //     this.banner = res.data.data.map(item => {
-    //       return {
-    //         url: item.Hyperlink,
-    //         img: item.FileUrl
-    //       };
-    //     });
-    //   } else {
-    //     console.error(res.data.message);
-    //   }
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // });
+    this.$api.GetSystemBanner().then(data=>{
+      if(data.data){
+        this.banner = data.data
+      }
+    })
+    
     //公告
-    // getNotcomList(function(data){
-    //   console.log("公告：",data)
-    //   that.trumpetList = data.noList
-    //   console.log(that.trumpetList)
-    // })
+    this.$api.getNotcomList().then(data=>{
+      if(data.data){
+        that.trumpetList = data.data
+      }
+    })
   }
 };
 </script>

@@ -119,6 +119,13 @@ const router = new Router({
       }
     },
     {
+      path: '/register',
+      name: 'register',
+      component: function (resolve) {
+        require(['../pages/register'], resolve)
+      }
+    },
+    {
       path: '/voucherSuccess',
       name: 'voucherSuccess',
       component: function (resolve) {
