@@ -92,6 +92,10 @@ export default {
     //       console.log(err);
     //     });
     // }
+  },
+  beforeRouteEnter (to, from, next) {
+    if(window.sessionStorage.getItem('studentID')) next()
+    else next('/login')
   }
 };
 </script>

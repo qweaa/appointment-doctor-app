@@ -118,9 +118,15 @@ export default {
         //单个医师排班列表
         getDoctorSchedul(start,end){
             var that = this;
-            getDoctorScheduling(this.doctorId,start,end,function(data){
-                that.setBookList(that.setOutTime(data))
+            this.$api.getDoctorBooks(this.doctorId).then(data=>{
+                console.log(data.data)
+                if(data.data && data.data.length > 0){
+                    
+                }
             })
+            // getDoctorScheduling(this.doctorId,start,end,function(data){
+            //     that.setBookList(that.setOutTime(data))
+            // })
         },
         //请求ECA店医师排班列表
         getECASchedul(start,end){

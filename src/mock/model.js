@@ -134,8 +134,53 @@ const student = [
     },
 ]
 
+//时间表
+const time = [
+    {
+        id: 0,
+        start_time: '08:00:00',
+        end_time: '08:30:00',
+        use: 1,
+    },{
+        id: 1,
+        start_time: '08:30:00',
+        end_time: '09:00:00',
+        use: 1,
+    },{
+        id: 2,
+        start_time: '09:00:00',
+        end_time: '09:00:00',
+        use: 1,
+    },{
+        id: 3,
+        start_time: '09:30:00',
+        end_time: '10:0:00',
+        use: 1,
+    },
+]
+
+//预约表
+const book = [
+    {
+        id: 0,
+        doctor_id: '00001',
+        time_id: 0,
+        can_book: 10,
+        has_book: 0,
+    },{
+        id: 1,
+        doctor_id: '00001',
+        time_id: 1,
+        can_book: 10,
+        has_book: 0,
+    },
+
+]
+
 export {
     name,
     doctors,
     student,
+    time,
+    book,
 }

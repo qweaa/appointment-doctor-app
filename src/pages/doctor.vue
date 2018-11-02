@@ -24,7 +24,7 @@
         <div class="user-item group">
             <div to="###" class="item flex-center">
                 <div class="left flex-center">
-                    <img :src="info.FileUrl" alt="">
+                    <img :src="info.avatarUrl" alt="">
                 </div>
                 <div class="middle">
                     <h5 class="flex-center">{{info.NickName}} <span>主任医师</span></h5>
@@ -42,7 +42,7 @@
         <!-- 医生详细介绍 -->
         <div class="detailInfo group">
             <h6>医师简介</h6>
-            <p>{{info.Detail}}</p>
+            <p>{{info.info}}</p>
         </div>
         <!-- 医生详细介绍 END-->
         <!-- 预约弹窗 -->
@@ -87,10 +87,14 @@ export default {
     mounted(){
         this.doctorId = this.$route.query.doctorId;
         var that = this;
-        getDoctorDetail(this.doctorId,function(data){
-            console.log(data)
-            that.info = data
+        this.$api.getDoctorDetail(this.doctorId).then(data=>{
+            console.log(data.data)
+            that.info = data.data
         })
+        // getDoctorDetail(this.doctorId,function(data){
+        //     console.log(data)
+        //     that.info = data
+        // })
     }
 }
 </script>

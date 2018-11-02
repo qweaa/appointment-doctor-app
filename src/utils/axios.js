@@ -148,4 +148,24 @@ export default {
         })
     },
 
+    //==================医师================
+
+    //取医师详细信息
+    getDoctorDetail(id){
+        return ajax({
+            url: '/home/getDoctorDetail',
+            description: '取医师详细信息',
+            data: {id},
+        })
+    },
+    //取医师预约时间列表
+    getDoctorBooks(id){
+        return ajax({
+            url: '/home/getDoctorBooks',
+            description: '取医师预约时间列表',
+            data: {id},
+        })
+    },
+    
+
 }
