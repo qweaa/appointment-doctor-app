@@ -19,7 +19,7 @@ Mock.mock('/home/getDoctorDetail', req=>{
     const model = doctors
 
     for(let i of model){
-        if(i.F_Id === id) list = i
+        if(i.id === id) list = i
     }
     res.data = list
     res.messages = '取医师详细信息成功'
@@ -31,14 +31,17 @@ Mock.mock('/home/getDoctorBooks', req=>{
     console.log("传入参数：",req)
     
     let res = response,
-        id = JSON.parse(req.body).id,
+        body = JSON.parse(req.body),
+        id = body.id,
+        date = new Date(body.date + ' 00:00:00').getTime(),
         list = []
 
     const _book = book            //预约列表
     const _time = time            //时间列表
 
     for(let i of _book){
-        if(i.doctor_id === id){
+        let _book_date = new Date(i.date + ' 00:00:00').getTime()
+        if(i.doctor_id === id && date == _book_date){
             for(let j of _time){
                 if(j.id ===  i.time_id){
                     list.push(Object.assign(i,j))

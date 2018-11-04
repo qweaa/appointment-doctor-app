@@ -2,7 +2,7 @@ const name = '数据模型'
 //医师
 const doctors = [
     {
-        F_Id: '00001',
+        id: '00001',
         NickName: '黄医师',
         realName: '黄德东',
         age: 28,
@@ -16,7 +16,7 @@ const doctors = [
         evaluate: 80,
         info: '黄医师简介',
     },{
-        F_Id: '00002',
+        id: '00002',
         NickName: '钟德华医师',
         realName: '钟德华',
         age: 34,
@@ -30,7 +30,7 @@ const doctors = [
         evaluate: 80,
         info: '钟德华医师简介',
     },{
-        F_Id: '00003',
+        id: '00003',
         NickName: '钟医师',
         realName: '钟宇煌',
         age: 43,
@@ -44,7 +44,7 @@ const doctors = [
         evaluate: 80,
         info: '钟宇煌医师简介',
     },{
-        F_Id: '00004',
+        id: '00004',
         NickName: '程奕迅医师',
         realName: '程奕迅',
         age:31,
@@ -58,7 +58,7 @@ const doctors = [
         evaluate: 80,
         info: '程奕迅医师简介',
     },{
-        F_Id: '00005',
+        id: '00005',
         NickName: '高医师',
         realName: '高忠明',
         age: 28,
@@ -72,7 +72,7 @@ const doctors = [
         evaluate: 80,
         info: '高医师师简介',
     },{
-        F_Id: '00006',
+        id: '00006',
         NickName: '高德医师',
         realName: '高德',
         age: 34,
@@ -86,7 +86,7 @@ const doctors = [
         evaluate: 80,
         info: '高德医师师简介',
     },{
-        F_Id: '00007',
+        id: '00007',
         NickName: '刘医师',
         realName: '刘志成',
         age: 38,
@@ -105,7 +105,7 @@ const doctors = [
 //用户
 const student = [
     {
-        F_Id: '00001',
+        id: '00001',
         studentID: '1440225120',
         password: '123456',
         realName: '卢新益',
@@ -119,7 +119,7 @@ const student = [
         info: '我是一条帅气的小肥龙',
     },
     {
-        F_Id: '00002',
+        id: '00002',
         studentID: '1440225121',
         password: '123456',
         realName: '蓝晓强',
@@ -156,6 +156,11 @@ const time = [
         start_time: '09:30:00',
         end_time: '10:0:00',
         use: 1,
+    },{
+        id: 4,
+        start_time: '16:30:00',
+        end_time: '17:0:00',
+        use: 1,
     },
 ]
 
@@ -164,15 +169,35 @@ const book = [
     {
         id: 0,
         doctor_id: '00001',
+        date: '2018/11/04',
         time_id: 0,
         can_book: 10,
         has_book: 0,
+        price: '10.00',
     },{
         id: 1,
         doctor_id: '00001',
+        date: '2018/11/04',
         time_id: 1,
         can_book: 10,
         has_book: 0,
+        price: '10.00',
+    },{
+        id: 2,
+        doctor_id: '00001',
+        date: '2018/11/04',
+        time_id: 2,
+        can_book: 10,
+        has_book: 0,
+        price: '10.00',
+    },{
+        id: 3,
+        doctor_id: '00001',
+        date: '2018/11/04',
+        time_id: 4,
+        can_book: 10,
+        has_book: 0,
+        price: '10.00',
     },
 
 ]

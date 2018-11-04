@@ -36,21 +36,21 @@
         <div class="list-reservation">
             <div class="item flex-center" v-for="(v,i) in bookList" :key="i">
                 <div class="left flex-center" v-if="ecaid">
-                    <p>{{v.DTime.split("~")[0]}}</p>
+                    <p>{{v.start_time}}</p>
                     <p>~</p>
-                    <p>{{v.DTime.split("~")[1]}}</p>
+                    <p>{{v.end_time}}</p>
                 </div>
                 <div class="middle" v-if="ecaid">
                     <h5>{{v.DNickName}}</h5>
-                    <p>价格 ¥{{v.Price}}</p>
-                    <p>剩余名额 {{v.Stock}}人</p>
+                    <p>价格 ¥{{v.price}}</p>
+                    <p>剩余名额 {{v.can_book - v.has_book}}人</p>
                 </div>
                 <div class="inDoctor" v-else>
-                    <h6>{{v.DTime}}</h6>
-                    <p>剩余名额 {{v.Stock}}人</p>
+                    <h6>{{v.start_time + '~' + v.end_time}}</h6>
+                    <p>剩余名额 {{v.can_book - v.has_book}}人</p>
                 </div>
                 <span v-if="v.outTime" class="right outTime">已过期</span>
-                <router-link v-else class="right" :to="'/appointment?appointmentInfo='+JSON.stringify(v)">预定</router-link>
+                <span v-else class="right" @click="gotoAppoint(v)">预定</span>
             </div>
             <default-page v-if="bookList.length == 0" :data="defaultData"></default-page>
         </div>
@@ -97,14 +97,20 @@ export default {
         }
     },
     methods:{
+        //跳转预约页面
+        gotoAppoint(v){
+            window.localStorage.setItem('oysyBook',JSON.stringify(v))
+            this.$router.push('/appointment')
+        },
         //setOutTime
         setOutTime(data){
             let result = data,
-                now = new Date().getTime(),
+                now = new Date(),
+                nowTime = now.getTime(),
                 startTime;
             for(let i of result){
-                startTime = new Date(i.DDate.split(" ")[0].replace(/\-/g, "/") + ' ' + i.DTime.split("~")[0]).getTime();
-                if(startTime < now){
+                startTime = new Date(now.toLocaleDateString() + ' ' + i.start_time).getTime();
+                if(startTime < nowTime){
                     i.outTime = true;
                 }else{
                     i.outTime = false;
@@ -118,11 +124,23 @@ export default {
         //单个医师排班列表
         getDoctorSchedul(start,end){
             var that = this;
-            this.$api.getDoctorBooks(this.doctorId).then(data=>{
+            this.$api.getDoctorBooks({
+                id: this.doctorId,
+                date: start,
+            }).then(data=>{
                 console.log(data.data)
                 if(data.data && data.data.length > 0){
-                    
+                    console.log("00",new Date(start + ' 00:00:00').getTime(), new Date().getTime())
+                    if(new Date(start + ' 00:00:00').getTime() > new Date().getTime()){
+                        for(let i of data.data){
+                            i.outTime = false
+                        }
+                        this.bookList = data.data
+                    }else{
+                        this.bookList = this.setOutTime(data.data)
+                    }
                 }
+                console.log("000",this.bookList)
             })
             // getDoctorScheduling(this.doctorId,start,end,function(data){
             //     that.setBookList(that.setOutTime(data))
@@ -144,6 +162,7 @@ export default {
             参数名: parameters"
         */
         selectECASchedul(i){
+            this.bookList = []
             var date = this.dateList[i];
             this.dateTab = i;
             if(this.ecaid) this.getECASchedul(date.year+'-'+date.date,date.year+'-'+date.date)

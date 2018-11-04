@@ -3,7 +3,7 @@
     <m-header v-bind="headerData"></m-header>
     <div class="title"><img src="../assets/images/register_icon_registration.png" alt="">预约信息</div>
     <div class="appointmentInfo">
-      <p>预约医师<span>{{appointmentInfo.DNickName}}</span></p>
+      <p>预约医师<span>{{doctor.NickName}}</span></p>
       <p>就诊时间<span>{{DTime}}</span></p>
     </div>
     <div class="trainerInfo">
@@ -25,7 +25,7 @@
     </div>
     <div class="total">
       <div class="title"><img src="../assets/images/register_icon_money.png" alt="">费用</div>
-      <div><span>合计</span><h4>{{appointmentInfo.Price}}元</h4></div>
+      <div><span>合计</span><h4>{{appointmentInfo.price}}元</h4></div>
     </div>
     <button class="subButton" @click="submited">预约</button>
   </div>
@@ -44,6 +44,7 @@ export default {
         title: "预约",
         share: false
       },
+      doctor: '',
       name: "",
       idNumber: "",
       phoneNumber: "",
@@ -95,7 +96,7 @@ export default {
       }
       this.$http
         .post("/User/UserReservation", {
-          DoctorWorkDateConnId: this.appointmentInfo.F_Id,
+          DoctorWorkDateConnId: this.appointmentInfo.id,
           MobilePhone: this.phoneNumber,
           IdCard: this.idNumber,
           NickName: this.name
@@ -115,10 +116,19 @@ export default {
     }
   },
   mounted() {
-    this.appointmentInfo = JSON.parse(this.$route.query.appointmentInfo);
-    var dataArr = this.appointmentInfo.DDate.split(" ");
-    var date = dataArr[0].split("-");
-    this.DTime = `${date[0]}年${date[1]}月${date[2]}日 ` + this.appointmentInfo.DTime
+    if(window.localStorage.getItem('oysyBook')){
+      this.appointmentInfo = JSON.parse(window.localStorage.getItem('oysyBook'))
+      console.log("aaa",this.appointmentInfo)
+      this.DTime = this.appointmentInfo.date.replace('/','年').replace('/','月').replace('/','日') + ' ' + this.appointmentInfo.start_time
+
+      this.$api.getDoctorDetail(this.appointmentInfo.doctor_id).then(data=>{
+        this.doctor = data.data
+      })
+    }
+    // this.appointmentInfo = JSON.parse(this.$route.query.appointmentInfo);
+    // var dataArr = this.appointmentInfo.DDate.split(" ");
+    // var date = dataArr[0].split("-");
+    // this.DTime = `${date[0]}年${date[1]}月${date[2]}日 ` + this.appointmentInfo.DTime
   }
 };
 </script>

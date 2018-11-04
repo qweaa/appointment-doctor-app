@@ -124,7 +124,7 @@
                             <p>价格 ¥{{v.Price}}</p>
                             <p>剩余名额 {{v.Stock}}人</p>
                         </div>
-                        <router-link class="right" :to="'/doctor?id='+v.F_Id">预定</router-link>
+                        <router-link class="right" :to="'/doctor?id='+v.id">预定</router-link>
                     </div>
                 </div> -->
                 <!-- 预约时间 END -->
@@ -136,7 +136,7 @@
             <div class="user-item" v-else>
                 <m-default v-if="doctorList.length == 0" :data="defaultData"></m-default>
                 <template v-else>
-                    <router-link :to="'/doctor?doctorId='+v.F_Id" class="item flex-center" v-for="(v,i) in doctorList" :key="i">
+                    <router-link :to="'/doctor?doctorId='+v.id" class="item flex-center" v-for="(v,i) in doctorList" :key="i">
                         <div class="left flex-center">
                             <img :src="v.FileUrl" alt="">
                         </div>

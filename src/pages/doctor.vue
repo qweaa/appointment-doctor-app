@@ -76,7 +76,7 @@ export default {
             info: {
                 // Detail:"ttt",
                 // F_CreatorTime:"2017-12-03 08:50:16",
-                // F_Id:"390d5a64-a13a-4694-a910-01035f88d12b",
+                // id:"390d5a64-a13a-4694-a910-01035f88d12b",
                 // FileUrl:"http://hyfw-img.oss-cn-hangzhou.aliyuncs.com/mt/20171203/03085011931.png",
                 // NickName:"zzz"
             }

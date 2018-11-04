@@ -95,7 +95,7 @@ Mock.mock('/home/getDoctorList', req=>{
         let list = []
 
         for(let i of doctorsList){
-            if(i.F_Id.indexOf(key) > -1){
+            if(i.id.indexOf(key) > -1){
                 list.push(i)
             }else if(i.NickName.indexOf(key) > -1){
                 list.push(i)

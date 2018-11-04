@@ -71,7 +71,7 @@ export default {
         FileUrl: '',
         Detail: '',
         F_CreatorTime: '',
-        F_Id: '',
+        id: '',
         NickName: ''
       },
       OrderNum: '',

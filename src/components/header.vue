@@ -100,7 +100,7 @@
             <div class="searchDoctor" v-if="searchList.doctorList.length != 0">
                 <p>医师</p>
                 <transition-group name="slide-fade">
-                    <router-link :to="'/doctor?doctorId='+v.F_Id" class="item" v-for="(v,i) in searchList.doctorList" :key="i">{{v.NickName}}</router-link>
+                    <router-link :to="'/doctor?doctorId='+v.id" class="item" v-for="(v,i) in searchList.doctorList" :key="i">{{v.NickName}}</router-link>
                 </transition-group>
             </div><!-- 医师 END -->
             <transition name="slide-fade">

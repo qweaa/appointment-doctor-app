@@ -159,11 +159,15 @@ export default {
         })
     },
     //取医师预约时间列表
-    getDoctorBooks(id){
+    getDoctorBooks(options){
+        let {
+            id = '',
+            date = '',
+        } = options
         return ajax({
             url: '/home/getDoctorBooks',
             description: '取医师预约时间列表',
-            data: {id},
+            data: {id,date},
         })
     },
     
