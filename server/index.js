@@ -2,10 +2,12 @@ const express = require('express')
 const app = express()
 
 //actions
-const studnet = require('./action/student')
+const student = require('./action/student')
+const auth = require('./action/auth')
 
 
-app.use('/studnet',studnet)
+app.use('/student',student)
+app.use('/auth',auth)
 
 
 
