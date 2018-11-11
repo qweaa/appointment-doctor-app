@@ -24,7 +24,7 @@
         </x-input>
       </group> -->
       <div style="padding:.5rem 0;">
-        <x-button type="warn" :class="{unfinish:isUnfinish}" :disabled="isUnfinish">注册</x-button>
+        <x-button type="warn" :class="{unfinish:isUnfinish}" :disabled="isUnfinish" @click.native="submit">注册</x-button>
       </div>
       <div style="padding:.5rem 0;">
         <p class="goto">
@@ -67,6 +67,47 @@ export default {
     };
   },
   methods: {
+    //确认注册
+    submit(){
+      if(!this.studentID){
+        this.$vux.toast.text("请填写学号", "middle");
+        return;
+      }
+
+      if(!this.password){
+        this.$vux.toast.text("请填密码", "middle");
+        return;
+      }
+
+      if(this.password !== ""){
+        if(this.password.length < 6 || this.password.length > 20){
+          this.$vux.toast.text("密码长度应在6-20位间", "middle");
+          return;
+        }
+        if(/[\[\]'":\.\{\}*&%$\\\|\/><#!~,+\-\?]/g.test(this.password)){
+          this.$vux.toast.text("密码含有非法支付，请修改", "middle");
+          return;
+        }
+      }
+
+      this.$api.register({
+        studentID: this.studentID,
+        password: this.password,
+      }).then(data=>{
+        if(data.success){
+          this.$vux.toast.show({
+            text: '注册成功',
+            type: 'success'
+          })
+          window.sessionStorage.setItem('studentID',this.studentID)
+          setTimeout(()=>{
+            this.$router.push('/')
+          },1000)
+        }else{
+          this.$vux.toast.text(data.messages || "注册失败", "middle");
+        }
+      })
+    },
     checkPhone() {
       if (this.phone == "") {
         this.$vux.toast.text("请输入手机号码", "middle");
@@ -80,7 +121,7 @@ export default {
       if(this.studentID !== ""){
         if(this.studentID.length !== 10){
           this.$vux.toast.text("请检查学号", "middle");
-          return;
+          return false;
         }
       }
     },

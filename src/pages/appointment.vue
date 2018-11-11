@@ -3,7 +3,7 @@
     <m-header v-bind="headerData"></m-header>
     <div class="title"><img src="../assets/images/register_icon_registration.png" alt="">预约信息</div>
     <div class="appointmentInfo">
-      <p>预约医师<span>{{doctor.NickName}}</span></p>
+      <p>预约医师<span>{{doctor.realName}}</span></p>
       <p>就诊时间<span>{{DTime}}</span></p>
     </div>
     <div class="trainerInfo">
@@ -122,7 +122,7 @@ export default {
       this.DTime = this.appointmentInfo.date.replace('/','年').replace('/','月').replace('/','日') + ' ' + this.appointmentInfo.start_time
 
       this.$api.getDoctorDetail(this.appointmentInfo.doctor_id).then(data=>{
-        this.doctor = data.data
+        this.doctor = data.data[0]
       })
     }
     // this.appointmentInfo = JSON.parse(this.$route.query.appointmentInfo);

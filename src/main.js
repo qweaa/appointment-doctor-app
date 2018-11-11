@@ -16,7 +16,7 @@ Vue.use(ConfirmPlugin)
 Vue.use(LoadingPlugin)
 
 
-import './mock'
+// import './mock'
 import request from './utils/axios'
 
 Vue.prototype.$api = request

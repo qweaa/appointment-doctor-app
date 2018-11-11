@@ -89,7 +89,7 @@ export default {
         var that = this;
         this.$api.getDoctorDetail(this.doctorId).then(data=>{
             console.log(data.data)
-            that.info = data.data
+            that.info = data.data[0]
         })
         // getDoctorDetail(this.doctorId,function(data){
         //     console.log(data)

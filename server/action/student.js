@@ -1,15 +1,22 @@
 const express = require('express')
 const router = express.Router()
 const conn = require('../model')
-const respond = require('../config').respond
+const resp = require('../config').respond
+const serverConfig = require('../config').server
+
+const server_address = serverConfig.address + ':' + serverConfig.port
 
 router.get('/getStudentModule', (req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
     // console.log("req.params: ",req.params)
     // console.log("req.query: ",req.query)
     const studentID = req.query.studentID
     if(studentID){
         conn.query(`SELECT * from student where studentID = ${studentID}`, function (error, results, fields) {
             if (!error){
+                for(let i of results){
+                    i.avatarUrl = server_address + i.avatarUrl
+                }
                 res.json(Object.assign(respond, {
                     success: true,
                     data: results,
@@ -31,8 +38,12 @@ router.get('/getStudentModule', (req,res)=>{
 
 //取学生列表
 router.get('/getStudentList',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
     conn.query(`SELECT * from student`, function (error, results, fields) {
         if (!error){
+            for(let i of results){
+                i.avatarUrl = server_address + i.avatarUrl
+            }
             res.json(Object.assign(respond, {
                 success: true,
                 data: results,
@@ -48,6 +59,7 @@ router.get('/getStudentList',(req,res)=>{
 })
 
 router.post('/updateStudentModule',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
     // const data = req.query
     const data = req.params
 

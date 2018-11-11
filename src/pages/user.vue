@@ -58,7 +58,7 @@ export default {
     getStudentModel(id){
       let stuID = id || this.studentID || ''
       this.$api.getStudentModel(stuID).then(data=>{
-        if(data.data) this.UserInfo = data.data
+        if(data.data) this.UserInfo = data.data[0]
       })
     },
   },

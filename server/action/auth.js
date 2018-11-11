@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const conn = require('../model')
-const respond = require('../config').respond
+const resp = require('../config').respond
 
 //登陆
 router.post('/login', (req,res)=>{
-    const data = req.params
+    const respond = JSON.parse(JSON.stringify(resp))
+    const data = req.query
 
     if(data.studentID){
         conn.query(`SELECT * from student where studentID = ${data.studentID}`, function (error, results, fields) {
@@ -41,7 +42,8 @@ router.post('/login', (req,res)=>{
 })
 
 //注册
-router.get('/register',(req,res)=>{
+router.post('/register',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
     // const data = req.params
     const data = req.query
 

@@ -90,12 +90,13 @@
         <!-- 搜索弹窗 -->
         <popup v-model="searchPopup" height="100%" class="searchPopup">
             <!-- 门店 START -->
-            <div class="searchStore" v-if="searchList.storeList.length != 0">
+            <!-- <div class="searchStore" v-if="searchList.storeList.length != 0">
                 <p>门店</p>
                 <transition-group name="slide-fade">
                     <router-link :to="'/storeInfo?ecaid=' + v.ECAId + '&address=' + v.City+v.Area+v.Address + '&lng='  + v.Longitude + '&lat=' + v.Latitude" class="item" v-for="(v,i) in searchList.storeList" :key="i">{{v.ShopName}}</router-link>
                 </transition-group>
-            </div><!-- 门店 END -->
+            </div> -->
+            <!-- 门店 END -->
             <!-- 医师 START -->
             <div class="searchDoctor" v-if="searchList.doctorList.length != 0">
                 <p>医师</p>
@@ -104,7 +105,7 @@
                 </transition-group>
             </div><!-- 医师 END -->
             <transition name="slide-fade">
-                <div class="searchNothing" v-if="searchList.storeList.length == 0 && searchList.doctorList.length == 0">搜索结果为空，换个关键词试试吧~</div>
+                <div class="searchNothing" v-if="searchnone">搜索结果为空，换个关键词试试吧~</div>
             </transition>
         </popup>
         <!-- 搜索弹窗 end-->
@@ -140,6 +141,8 @@ export default {
                 doctorList: []
             },
             searchWord: '',
+
+            searchnone: false,
         }
     },
     props:{
@@ -180,16 +183,16 @@ export default {
             this.searchPopup = true;
             $('.my-header').css({'position':'relative','z-index':'9999'})
             this.$emit('inSearch');
-            if(this.$store.state.local.local.state && this.searchList.storeList.length == 0){
-              this.getRecommendStore();
-            }
+            // if(this.$store.state.local.local.state && this.searchList.storeList.length == 0){
+            //   this.getRecommendStore();
+            // }
         },
         outSearch(){
             this.searchFocus = false;
             this.searchPopup = false;
-            if(this.searchList.storeList.length == 0){
-                this.getRecommendStore();
-            }
+            // if(this.searchList.storeList.length == 0){
+            //     this.getRecommendStore();
+            // }
             this.searchWord = '';
             setTimeout(function(){
                 $('.my-header').css({'position':'static'})
@@ -213,8 +216,9 @@ export default {
                     //     console.log("门店",data)
                     //     that.searchList.storeList = data;
                     // });
-                    this.$api.getDoctorList(that.searchWord).then(data=>{
+                    this.$api.getDoctorList(this.searchWord).then(data=>{
                         if(data.data){
+                            if(data.data.length == 0) this.searchnone = true
                             // that.searchList.doctorList = []
                             that.searchList.doctorList = data.data;
                         }

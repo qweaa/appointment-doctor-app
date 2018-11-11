@@ -4,6 +4,9 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
+axios.defaults.baseURL = 'http://localhost:9093';
+axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
+
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
     console.log(123)
@@ -45,23 +48,25 @@ function ajax(options){
         timeout = 30 * 1000,
         responseType = 'json',
     } = options
+
     return new Promise((resolve, reject)=>{
         axios({
-            method: method,
-            url: url,
-            data: data,
-            timeout: timeout,
-            responseType: responseType,
-        }).then(res=>{
+        method: method,
+        url: url,
+        timeout: timeout,
+        params: data,
+        responseType: responseType,
+    }).then(res=>{
             console.log('请求：'+(description || url)+' 成功')
             console.log('返回：', res)
             console.log('')
             if(res.data.success){
                 resolve(res.data)
             }else{
+                let text = res.data.data === -2 ? '请登陆' : res.data.messages || '请求不被允许'
                 Vue.$vux.toast.show({
                     type: 'warn',
-                    text: res.data.messages || '请求不被允许'
+                    text: text
                 })
                 reject(res)
             }
@@ -78,36 +83,36 @@ function ajax(options){
 export default {
     getRecommend(data = {a: 1}){
         return ajax({
-            url: '/home/getRecommendStore',
-            description: '取推荐 门店 列表',
+            url: '/doctor/getRecommentsList',
+            description: '取推荐 医师 列表',
             data: data
         })
     },
     getRecommendDoctor(data = {a: 1}){
         return ajax({
-            url: '/home/getRecommendDoctor',
+            url: '/doctor/getRecommentsList',
             description: '取推荐 医师 列表',
             data: data
         })
     },
     getNotcomList(data={a:1}){
         return ajax({
-            url: '/home/getNotcomList',
+            url: '/note/getNotesList',
             description: '取公告',
             data: data
         })
     },
     GetSystemBanner(data={a:1}){
         return ajax({
-            url: '/home/GetSystemBanner',
+            url: '/home/getBannersList',
             description: '取首页轮播图',
             data: data
         })
     },
     //搜索医师
-    getDoctorList(key = ''){
+    getDoctorList(key = '1'){
         return ajax({
-            url: '/home/getDoctorList',
+            url: '/doctor/getSearch',
             description: '搜索医师',
             data: {key}
         })
@@ -121,8 +126,25 @@ export default {
             password = '',
         } = options
         return ajax({
-            url: '/home/login',
+            url: '/auth/login',
             description: '登陆',
+            method: 'post',
+            data: {
+                studentID,
+                password,
+            }
+        })
+    },
+    //注册
+    register(options){
+        let {
+            studentID = '',
+            password = '',
+        } = options
+        return ajax({
+            url: '/auth/register',
+            description: '祖册',
+            method: 'post',
             data: {
                 studentID,
                 password,
@@ -132,7 +154,7 @@ export default {
     //取学生信息信息
     getStudentModel(studentID){
         return ajax({
-            url: '/home/getStudentModel',
+            url: '/student/getStudentModule',
             description: '取学生信息',
             data: {
                 studentID,
@@ -151,11 +173,11 @@ export default {
     //==================医师================
 
     //取医师详细信息
-    getDoctorDetail(id){
+    getDoctorDetail(doctorID){
         return ajax({
-            url: '/home/getDoctorDetail',
+            url: '/doctor/getDoctorModule',
             description: '取医师详细信息',
-            data: {id},
+            data: {doctorID},
         })
     },
     //取医师预约时间列表
@@ -165,9 +187,9 @@ export default {
             date = '',
         } = options
         return ajax({
-            url: '/home/getDoctorBooks',
+            url: '/book/getBookList',
             description: '取医师预约时间列表',
-            data: {id,date},
+            data: {doctorID: id,date},
         })
     },
     

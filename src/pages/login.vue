@@ -79,7 +79,7 @@ export default {
         password: this.password,
       }).then(data=>{
         console.log("登陆then：",data)
-        if(data.data){
+        if(data.success){
           this.$vux.toast.show({
             text: '登陆成功',
             type: 'success'

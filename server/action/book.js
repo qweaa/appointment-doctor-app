@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const conn = require('../model')
-const respond = require('../config').respond
+const resp = require('../config').respond
 
 //取预约时间列表
 router.get('/getBookList', (req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
     // console.log("req.params: ",req.params)
     // console.log("req.query: ",req.query)
     let data = req.query
