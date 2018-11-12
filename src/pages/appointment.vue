@@ -94,25 +94,9 @@ export default {
         });
         return;
       }
-      this.$http
-        .post("/User/UserReservation", {
-          DoctorWorkDateConnId: this.appointmentInfo.id,
-          MobilePhone: this.phoneNumber,
-          IdCard: this.idNumber,
-          NickName: this.name
-        })
-        .then(res => {
-          console.log(res)
-          if (res.data.state === "success" || res.data.state === "info") {
-            this.$router.push({ path: '/payCenter', query: {OrderNum:res.data.data.OrderNum}})
-          } else {
-            console.error(res.data.message);
-            that.$vux.toast.show({
-              text: res.data.message,
-              type: 'warn'
-            })
-          }
-        });
+      this.$api.submitOrder().then(data=>{
+
+      })
     }
   },
   mounted() {

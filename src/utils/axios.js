@@ -5,7 +5,7 @@ Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
 axios.defaults.baseURL = 'http://localhost:9093';
-axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
+// axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -30,6 +30,7 @@ axios.interceptors.response.use(function (response) {
     Vue.$vux.loading.hide()
     return response;
 }, function (error) {
+    Vue.$vux.loading.hide()
     // 对响应错误做点什么
     Vue.$vux.toast.show({
         type: 'cancel',
@@ -56,6 +57,9 @@ function ajax(options){
         timeout: timeout,
         params: data,
         responseType: responseType,
+        headers: {
+            studentID: window.sessionStorage.getItem('studentID'),
+        }
     }).then(res=>{
             console.log('请求：'+(description || url)+' 成功')
             console.log('返回：', res)
@@ -190,6 +194,26 @@ export default {
             url: '/book/getBookList',
             description: '取医师预约时间列表',
             data: {doctorID: id,date},
+        })
+    },
+
+    //============订单===================
+    //提交订单
+    submitOrder(options){
+        // let data = Object({
+        //     doctorID : '',
+        //     book_id : '',
+        //     book_date : '',
+        //     book_price : '',
+        //     name : '',
+        //     idcard : '',
+        //     phone : '',
+        // },options)
+        return ajax({
+            url: '/order/submitOrder',
+            method: 'post',
+            description: '提交订单',
+            data: options,
         })
     },
     

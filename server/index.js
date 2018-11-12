@@ -52,6 +52,7 @@ const doctor = require('./action/doctor')
 const book = require('./action/book')
 const home = require('./action/home')
 const note = require('./action/note')
+const order = require('./action/order')
 
 
 app.use('/student',student)
@@ -60,6 +61,7 @@ app.use('/doctor',doctor)
 app.use('/book',book)
 app.use('/home',home)
 app.use('/note',note)
+app.use('/order',order)
 
 
 
