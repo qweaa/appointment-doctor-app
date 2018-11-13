@@ -4,7 +4,7 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-axios.defaults.baseURL = 'http://localhost:9093';
+axios.defaults.baseURL = 'http://192.168.1.2:9093';
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
@@ -30,6 +30,7 @@ axios.interceptors.response.use(function (response) {
     Vue.$vux.loading.hide()
     return response;
 }, function (error) {
+    alert(error.toString())
     Vue.$vux.loading.hide()
     // 对响应错误做点什么
     Vue.$vux.toast.show({

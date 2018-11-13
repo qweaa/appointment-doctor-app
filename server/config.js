@@ -5,7 +5,7 @@ const CONFIG = {
         messages: '请求失败',
     },
     server: {
-        address: 'http://localhost',
+        address: 'http://192.168.1.2',
         port: 9093,
     },
 }
