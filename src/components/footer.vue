@@ -57,9 +57,9 @@ export default {
                 },
                 {
                     link: '/store',
-                    defaultIcon: require("../assets/images/tab/tab_icon_shop_normal.png"),
-                    activeIcon: require("../assets/images/tab/tab_icon_shop_selected.png"),
-                    title: '门店',
+                    defaultIcon: require("../assets/images/tab/tab_icon_doctor_normal.png"),
+                    activeIcon: require("../assets/images/tab/tab_icon_doctor_selected.png"),
+                    title: '医师',
                 },
                 // {
                 //     link: '/location',
