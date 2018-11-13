@@ -30,7 +30,7 @@ app.all('*', function(req, res, next) {
     if(req.method=="OPTIONS") res.sendStatus(200);/*让options请求快速返回*/
     else {
         const respond = JSON.parse(JSON.stringify(resp))
-        if(isAuthRoute(req.originalUrl) && !req.headers.studentid){
+        if(isAuthRoute(req.originalUrl) && !Number(req.headers.studentid)){
             res.json(Object.assign(respond, {
                 data: -2,
                 messages: '不受信任请求，请求头缺少studentID值',

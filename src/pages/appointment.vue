@@ -94,8 +94,24 @@ export default {
         });
         return;
       }
-      this.$api.submitOrder().then(data=>{
-
+      this.$api.submitOrder({
+        'doctorID': this.doctor.doctorID,
+        'book_id': this.appointmentInfo.id,
+        'book_date': this.appointmentInfo.date,
+        'book_price': this.appointmentInfo.price,
+        'name': this.name,
+        'idcard': this.idNumber,
+        'phone': this.phoneNumber,
+      }).then(data=>{
+        if(data.success){
+          this.$vux.toast.show({
+            text: "订单提交成功",
+            type: "success"
+          });
+          setTimeout(_=>{
+            this.$router.push('/payCenter')
+          },1000)
+        }
       })
     }
   },

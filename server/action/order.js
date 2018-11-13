@@ -49,14 +49,14 @@ router.post('/submitOrder', (req,res)=>{
     const respond = JSON.parse(JSON.stringify(resp))
     const studentID = req.headers.studentid
 
-    if(!studentID){
+    if(!Number(studentID)){
         res.json(Object.assign(respond, {
-            messages: '缺少studentID值'
+            messages: '缺少studentID值，或传入的studentID错误'
         }))
         return
     }
 
-    //code status create_time
+    // code status create_time
     const keys = [
         'doctorID',
         'book_id',
@@ -69,12 +69,20 @@ router.post('/submitOrder', (req,res)=>{
 
     const data = req.query
     const status = 0            //状态0：待付款
+    const create_time = new Date().getTime()
+
+    let code = create_time.toString()
+    for(var i=0;i<6;i++) //6位随机数，用以加在时间戳后面。
+    {
+        code += Math.floor(Math.random()*10);
+    }
+
 
     //存储传过来错误的变量名
     let errorKeys = [],
-        sqlK = ['studentID'],       //["name", "id"] => name,id
-        sqlV = ['?'],               //['?','?'] => ?,?
-        sqlValue = [studentID]
+        sqlK = ['studentid','status','create_time','code'],       //["name", "id"] => name,id
+        sqlV = ['?','?',"?","?"],               //['?','?'] => ?,?
+        sqlValue = [Number(studentID),status,create_time,code]
     
     //遍历传入的请求对象
     for(let i in data){
@@ -88,7 +96,7 @@ router.post('/submitOrder', (req,res)=>{
     }
 
     
-    if(sqlK.length === 1){
+    if(sqlK.length === 3){
         res.json(Object.assign(respond, {
             messages: '请提供需要修改的键值对',
         }))
@@ -105,8 +113,8 @@ router.post('/submitOrder', (req,res)=>{
     }
 
     
-    const addSql = 'INSERT INTO order('+sqlK.join(',')+') VALUES('+sqlV.join(',')+')'
-       
+    const addSql = 'INSERT INTO `order` ('+sqlK.join(',')+') VALUES('+sqlV.join(',')+')'
+
     conn.query(addSql,sqlValue,function (err, result) {
         if(!err){
             res.json(Object.assign(respond, {
