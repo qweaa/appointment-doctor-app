@@ -4,7 +4,7 @@ const conn = require('../model')
 const resp = require('../config').respond
 const serverConfig = require('../config').server
 
-const server_address = serverConfig.address + ':' + serverConfig.port
+const server_address = serverConfig.host
 
 //取banner
 router.get('/getBannersList', (req,res)=>{

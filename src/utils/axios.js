@@ -217,6 +217,14 @@ export default {
             data: options,
         })
     },
+    //取订单详情
+    getOrderModule(Code){
+        return ajax({
+            url: '/order/getOrderModule',
+            description: '取订单详情',
+            data: {Code},
+        })
+    }
     
 
 }

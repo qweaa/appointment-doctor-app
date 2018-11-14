@@ -76,15 +76,24 @@ export default {
   created() {
     this.OrderNum = this.$route.query.OrderNum;
     var that = this;
-    getOrderDetail(this.OrderNum,(data)=>{
-      console.log(data)
-      that.balance = data.ValidMoney;
-      that.cost = data.ActualPayMoney;
-      that.doctor = data.ItemList[0].Title
-      that.F_CreatorTime = data.F_CreatorTime
-      that.time = this.getEndTime(data.F_CreatorTime.replace(/\-/g, "/"));
-      that.changeState()
+    this.$api.getOrderModule(this.OrderNum).then(data=>{
+      if(data.success){
+        // that.balance = data.ValidMoney;
+        that.cost = data.data.price;
+        that.doctor = data.data.ItemList[0].Title
+        that.F_CreatorTime = new Date(data.data.create_time).toLocaleString('chinese',{hour12:false})
+        that.time = this.getEndTime(data.data.create_time);
+      }
     })
+    // getOrderDetail(this.OrderNum,(data)=>{
+    //   console.log(data)
+    //   that.balance = data.ValidMoney;
+    //   that.cost = data.ActualPayMoney;
+    //   that.doctor = data.ItemList[0].Title
+    //   that.F_CreatorTime = new Date(data.create_time).toLocaleString('chinese',{hour12:false})
+    //   that.time = this.getEndTime(data.create_time);
+    //   that.changeState()
+    // })
   },
   mounted(){
   },
@@ -105,6 +114,10 @@ export default {
     },
     //支付 / 充值
     submit(){
+      console.log("立即支付")
+      return
+
+
       if(this.cost>this.balance){
         this.$router.push({
           path:`user/userName/voucherCenter`

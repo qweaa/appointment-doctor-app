@@ -3,6 +3,7 @@ const app = express()
 const serverConfig = require('./config').server
 const resp = require('./config').respond
 
+
 const authRoute = [
     'order',
     'student',
@@ -70,5 +71,5 @@ app.get('/',(req,res)=>{
 })
 
 const server = app.listen(serverConfig.port, _=>{
-    console.log(`node server start at ${serverConfig.address}:${serverConfig.port}`)
+    console.log(`node server start at ${serverConfig.host}`)
 })

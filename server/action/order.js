@@ -43,6 +43,35 @@ router.get('/getOrderList', (req,res)=>{
 
 })
 
+//取订单详情
+router.get('/getOrderModule',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
+    const studentID = req.headers.studentid
+    const data = req.query
+
+    if(!data.Code){
+        res.json(Object.assign(respond, {
+            messages: '请传入订单号'
+        }))
+        return
+    }
+
+    conn.query(`SELECT * from order where student_id = ${studentID} AND Code = ${data.Code}`, function (error, results, fields) {
+        if (!error){
+            res.json(Object.assign(respond, {
+                success: true,
+                data: results[0],
+                messages: '取订单详情成功',
+            }))
+        }else{
+            res.json(Object.assign(respond, {
+                data: error,
+                messages: '取订单详情失败',
+            }))
+        }
+    });
+})
+
 //提交订单
 
 router.post('/submitOrder', (req,res)=>{
@@ -119,7 +148,7 @@ router.post('/submitOrder', (req,res)=>{
         if(!err){
             res.json(Object.assign(respond, {
                 success: true,
-                data: result,
+                data: {result,code},
                 messages: '插入成功',
             }))
         }else{
