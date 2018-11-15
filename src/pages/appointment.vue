@@ -109,7 +109,7 @@ export default {
             type: "success"
           });
           setTimeout(_=>{
-            this.$router.push({path:'/payCenter',query:{OrderNum:data.Code}})
+            this.$router.push({path:'/payCenter',query:{OrderNum:data.data.code}})
           },1000)
         }
       })

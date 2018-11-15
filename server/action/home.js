@@ -8,6 +8,7 @@ const server_address = serverConfig.host
 
 //取banner
 router.get('/getBannersList', (req,res)=>{
+    
     const respond = JSON.parse(JSON.stringify(resp))
     conn.query(`SELECT * from banner where used = 1`, function (error, results, fields) {
         if (!error){

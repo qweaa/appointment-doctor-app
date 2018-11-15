@@ -28,7 +28,7 @@
               </li>
             </ul>
          </div>
-         <div class="group">
+         <!-- <div class="group">
            <ul class="table-view">
            <li class='table-cell'>
                     <img src="../assets/images/register_icon_money.png" class="pull-left media-object" alt="">
@@ -38,7 +38,7 @@
                     </div>
               </li>
          </ul>
-         </div>
+         </div> -->
          <box gap="10px 10px">
            <x-button type="warn" @click.native="submit">{{btnText}}</x-button>
          </box>
@@ -79,10 +79,10 @@ export default {
     this.$api.getOrderModule(this.OrderNum).then(data=>{
       if(data.success){
         // that.balance = data.ValidMoney;
-        that.cost = data.data.price;
-        that.doctor = data.data.ItemList[0].Title
-        that.F_CreatorTime = new Date(data.data.create_time).toLocaleString('chinese',{hour12:false})
-        that.time = this.getEndTime(data.data.create_time);
+        that.cost = data.data.book_price;
+        that.doctor = data.data.doctor_name
+        that.F_CreatorTime = new Date(Number(data.data.create_time)).toLocaleString('chinese',{hour12:false})
+        that.time = this.getEndTime(Number(data.data.create_time));
       }
     })
     // getOrderDetail(this.OrderNum,(data)=>{
@@ -114,6 +114,10 @@ export default {
     },
     //支付 / 充值
     submit(){
+      this.$vux.toast.show({
+        text: "微信支付",
+        type: "text"
+      });
       console.log("立即支付")
       return
 
