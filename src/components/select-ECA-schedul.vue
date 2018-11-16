@@ -109,6 +109,10 @@ export default {
                 nowTime = now.getTime(),
                 startTime;
             for(let i of result){
+                if(i.date > nowTime){
+                    i.outTime = false
+                    continue
+                }
                 startTime = new Date(now.toLocaleDateString() + ' ' + i.start_time).getTime();
                 if(startTime < nowTime){
                     i.outTime = true;

@@ -56,7 +56,7 @@ router.get('/getOrderModule',(req,res)=>{
         return
     }
 
-    conn.query(`SELECT * from orderView where studentID = ${studentID} AND Code = ${data.Code}`, function (error, results, fields) {
+    conn.query(`SELECT * from orderview where studentID = ${studentID} AND Code = ${data.Code}`, function (error, results, fields) {
         if (!error){
             res.json(Object.assign(respond, {
                 success: true,
@@ -146,7 +146,8 @@ router.post('/submitOrder', (req,res)=>{
 
     conn.query(addSql,sqlValue,function (err, result) {
         if(!err){
-            let timeout = new Date().getTime() - create_time
+            let timeout = (30 * 60 * 1000) - (new Date().getTime() - create_time)
+            console.log("定时时间",timeout)
             global['order'+code] = setTimeout(_=>{
                 let incode = code
                 conn.query('UPDATE `order` SET status = 1 WHERE code = ' + incode,function (err, result) {
@@ -160,7 +161,7 @@ router.post('/submitOrder', (req,res)=>{
                     }else SqlResult = err.sqlMessage
                     let val = [inincode,now,SqlResult,SqlSuccess]
                     console.log(SqlSuccess)
-                    conn.query('INSERT INTO orderServerLog (OrderCode,DeleteTime,SqlResult,SqlSuccess) VALUES ('+val.join(',')+')',function(err2,result2){
+                    conn.query('INSERT INTO orderserverlog (OrderCode,DeleteTime,SqlResult,SqlSuccess) VALUES ('+val.join(',')+')',function(err2,result2){
                         if(!err2) console.log("res",result2)
                         else console.log("err",err2)
                     })
