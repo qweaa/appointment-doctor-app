@@ -1,7 +1,7 @@
 const DB_CONFIG  = {
-    host     : 'localhost',
+    host     : '118.24.61.236',
     user     : 'root',
-    password : '666666',
+    password : '123456',
     database : 'oysy'
 }
 
