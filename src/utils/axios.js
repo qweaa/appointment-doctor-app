@@ -225,6 +225,17 @@ export default {
             description: '取订单详情',
             data: {Code},
         })
+    },
+
+
+    //=====================================用户管理===================================
+    //取用户信息详情
+    getStudentModule(studentID){
+        return ajax({
+            url: '/student/getStudentModule',
+            description: '取学生信息详情',
+            data: {studentID}
+        })
     }
     
 

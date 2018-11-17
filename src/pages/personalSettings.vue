@@ -108,9 +108,9 @@ export default {
       console.log(this.F_Birthday);
     },
     //更新健康、性别状况
-    // changeHealthy(value){
-    //   this.healthyTmp = value;
-    // },
+    changeHealthy(value){
+      this.healthyTmp = value;
+    },
     // comfirmHealthy(){
     //     this.healthyPopup = false;
     //     this.F_Healthy = this.healthyTmp;
@@ -181,18 +181,29 @@ export default {
     //     this.F_Birthday ='请选择';
     //   }
     // }else{
-      getUserDetail((data)=>{
-        console.log("网络请求",data)
-        that.F_NickName = data.F_NickName;
-        that.F_HeadIcon = data.F_HeadIcon;
-        that.F_Gender = data.F_Gender ? ['男'] : ['女'];
-        that.F_IdCard = data.F_IdCard;
+      this.$api.getStudentModule().then(data=>{
+        that.F_NickName = data.NickName;
+        that.F_HeadIcon = data.avatarUrl;
+        that.F_Gender = data.gender ? data.gender == 1 ? ['男'] : ['女'] : [''];
+        that.F_IdCard = data.idcard;
         if(!!data.F_Birthday){
           that.F_Birthday = data.F_Birthday.split(' ')[0];
         }else{
           that.F_Birthday ='请选择';
         }
       })
+      // getUserDetail((data)=>{
+      //   console.log("网络请求",data)
+      //   that.F_NickName = data.F_NickName;
+      //   that.F_HeadIcon = data.F_HeadIcon;
+      //   that.F_Gender = data.F_Gender ? ['男'] : ['女'];
+      //   that.F_IdCard = data.F_IdCard;
+      //   if(!!data.F_Birthday){
+      //     that.F_Birthday = data.F_Birthday.split(' ')[0];
+      //   }else{
+      //     that.F_Birthday ='请选择';
+      //   }
+      // })
     // }
     $('#userImg').on('change',(e)=>{
       var file = e.target.files[0]; //获取图片资源

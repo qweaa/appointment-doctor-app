@@ -10,7 +10,8 @@ router.get('/getStudentModule', (req,res)=>{
     const respond = JSON.parse(JSON.stringify(resp))
     // console.log("req.params: ",req.params)
     // console.log("req.query: ",req.query)
-    const studentID = req.query.studentID
+    // const studentID = req.query.studentID
+    const studentID = req.headers.studentid
     if(studentID){
         conn.query(`SELECT * from student where studentID = ${studentID}`, function (error, results, fields) {
             if (!error){

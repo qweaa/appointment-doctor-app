@@ -4,7 +4,7 @@
       <router-link to="/user/afei/personalSettings" class="editingInfo">
         <img :src="UserInfo.avatarUrl" alt="">
         <div>
-          <h3>{{UserInfo.NickName}}</h3>
+          <h3>{{UserInfo.NickName || '点击编辑个人信息'}}</h3>
           <p>查看并编辑个人资料</p>
         </div>
       </router-link>
