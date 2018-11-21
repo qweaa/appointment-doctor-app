@@ -6,6 +6,9 @@
           <img src="../assets/images/logo.png" alt="头像">
       </div>
       <group>
+        <x-input title="" class="weui-vcode" v-model="NickName"  @on-blur="checkNickName" placeholder="请输入昵称"></x-input>
+      </group>
+      <group>
         <x-input title="" :type="'number'" class="weui-vcode" v-model="studentID"  @on-blur="checkStudentID" placeholder="请输入学号"></x-input>
       </group>
       <group>
@@ -59,6 +62,7 @@ export default {
       count: '',
       code:'',
 
+      NickName: '',
       studentID: '',
       password: '',
       repeatPassword: '',
@@ -69,6 +73,10 @@ export default {
   methods: {
     //确认注册
     submit(){
+      if(!this.NickName){
+        this.$vux.toast.text("请填写昵称", "middle");
+        return;
+      }
       if(!this.studentID){
         this.$vux.toast.text("请填写学号", "middle");
         return;
@@ -92,6 +100,7 @@ export default {
 
       this.$api.register({
         studentID: this.studentID,
+        NickName: this.NickName,
         password: this.password,
       }).then(data=>{
         if(data.success){
@@ -107,6 +116,12 @@ export default {
           this.$vux.toast.text(data.messages || "注册失败", "middle");
         }
       })
+    },
+    checkNickName(){
+      if(!this.NickName){
+        this.$vux.toast.text("请填写昵称", "middle");
+        return;
+      }
     },
     checkPhone() {
       if (this.phone == "") {

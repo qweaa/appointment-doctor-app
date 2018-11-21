@@ -47,15 +47,15 @@ router.post('/register',(req,res)=>{
     // const data = req.params
     const data = req.query
 
-    if(!data.studentID || !data.password){
+    if(!data.studentID || !data.password || !data.NickName){
         res.json(Object.assign(respond, {
             messages: '参数不能为空',
         }))
         return
     }
 
-    const  addSql = 'INSERT INTO student(studentID,password) VALUES(?,?)';
-    const  addSqlParams = [data.studentID, data.password];
+    const  addSql = 'INSERT INTO student(studentID,password,NickName) VALUES(?,?,?)';
+    const  addSqlParams = [data.studentID, data.password,data.NickName];
     //增
     conn.query(addSql,addSqlParams,function (err, result) {
         if(!err){

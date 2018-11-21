@@ -18,6 +18,11 @@
         <img slot="icon" :src="item.icon">
       </cell>
     </group>
+    <group id="menus">
+      <cell @click.native="logout" title="退出登陆">
+        <img slot="icon" src="../assets/images/me_icon_exit.png" alt="">
+      </cell>
+    </group>
     <m-footer tab="3"></m-footer>
   </div>
 </template>
@@ -49,12 +54,28 @@ export default {
           title: "我的病历",
           link: "/myEvaluate",
           icon: require("../assets/images/me_icon_register.png")
-        }
+        },
       ],
       UserInfo: {}
     };
   },
   methods: {
+    logout(){
+      this.$vux.confirm.show({
+        title: '退出登陆提示',
+        content: '确定需要退出登陆吗？',
+        onConfirm: _=>{
+          window.sessionStorage.removeItem('studentID')
+          this.$vux.toast.show({
+            text: '退出成功',
+            type: 'success'
+          })
+          setTimeout(_=>{
+            this.$router.push('/')
+          }, 500);
+        }
+      })
+    },
     getStudentModel(id){
       let stuID = id || this.studentID || ''
       this.$api.getStudentModel(stuID).then(data=>{

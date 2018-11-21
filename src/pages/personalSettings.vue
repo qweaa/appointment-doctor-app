@@ -182,12 +182,14 @@ export default {
     //   }
     // }else{
       this.$api.getStudentModule().then(data=>{
-        that.F_NickName = data.NickName;
-        that.F_HeadIcon = data.avatarUrl;
-        that.F_Gender = data.gender ? data.gender == 1 ? ['男'] : ['女'] : [''];
-        that.F_IdCard = data.idcard;
-        if(!!data.F_Birthday){
-          that.F_Birthday = data.F_Birthday.split(' ')[0];
+        console.log("get",data)
+
+        that.F_NickName = data.data[0].NickName;
+        that.F_HeadIcon = data.data[0].avatarUrl;
+        that.F_Gender = data.data[0].gender ? data.data[0].gender == 1 ? ['男'] : ['女'] : [''];
+        that.F_IdCard = data.data[0].idcard;
+        if(!!data.data[0].F_Birthday){
+          that.F_Birthday = data.data[0].F_Birthday.split(' ')[0];
         }else{
           that.F_Birthday ='请选择';
         }
