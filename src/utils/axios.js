@@ -170,9 +170,10 @@ export default {
         })
     },
     //修改个人信息
-    modifyStudentModel(options){
+    updateStudentModule(options){
         return ajax({
-            url: '/home/modifyStudentModel',
+            method: 'POST',
+            url: '/student/updateStudentModule',
             description: '修改学生个人信息',
             data: options,
         })

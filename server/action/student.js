@@ -62,7 +62,7 @@ router.get('/getStudentList',(req,res)=>{
 router.post('/updateStudentModule',(req,res)=>{
     const respond = JSON.parse(JSON.stringify(resp))
     // const data = req.query
-    const data = req.params
+    const data = req.query
 
     if(!data.studentID){
         res.json(Object.assign(respond, {
@@ -72,7 +72,7 @@ router.post('/updateStudentModule',(req,res)=>{
     }
 
     //学生表所包含的键
-    const studentTableKeys = ['studentID','password','realName','NickName','age','gender','avatarUrl','province','city','country','info']
+    const studentTableKeys = ['studentID','password','realName','NickName','age','gender','avatarUrl','province','city','country','info', 'birthady', 'idcard']
 
     //存储传过来错误的变量名
     const errorKeys = []

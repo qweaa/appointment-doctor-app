@@ -148,19 +148,35 @@ export default {
         })
       }else{
         console.log("表单通过")
-        var that = this;
-        var form_data = new FormData();
-        var file_data = $("#userImg").prop("files")[0];
-        // 把上传的数据放入form_data
-        form_data.append("F_NickName", that.F_NickName);
-        form_data.append("F_Gender", that.F_Gender[0] == '女' ? false : true);
-        form_data.append("F_Birthday", that.F_Birthday);
-        form_data.append("F_IdCard", that.F_IdCard);
-        form_data.append("FileUrl", file_data);
+        // var that = this;
+        // var form_data = new FormData();
+        // var file_data = $("#userImg").prop("files")[0];
+        // // 把上传的数据放入form_data
+        // form_data.append("F_NickName", that.F_NickName);
+        // form_data.append("F_Gender", that.F_Gender[0] == '女' ? false : true);
+        // form_data.append("F_Birthday", that.F_Birthday);
+        // form_data.append("F_IdCard", that.F_IdCard);
+        // form_data.append("FileUrl", file_data);
 
-        saveUserInfo(form_data,function(data){
-            window.localStorage.removeItem("userInfo")
-        });
+        // saveUserInfo(form_data,function(data){
+        //     window.localStorage.removeItem("userInfo")
+        // });
+
+        this.$api.updateStudentModule({
+          studentID: window.sessionStorage.getItem('studentID'),
+          NickName: this.F_NickName,
+          gender: this.F_Gender[0] == '女' ? 2 : 1,
+          birthady: this.F_Birthday,
+          idcard: this.F_IdCard,
+          // FileUrl: this.file_data,
+        }).then(data=>{
+          if(data.success){
+            this.$vux.toast.show({
+              text: '修改个人信息成功',
+              type: 'success'
+            })
+          }
+        })
       }
     },
   },
@@ -188,8 +204,8 @@ export default {
         that.F_HeadIcon = data.data[0].avatarUrl;
         that.F_Gender = data.data[0].gender ? data.data[0].gender == 1 ? ['男'] : ['女'] : [''];
         that.F_IdCard = data.data[0].idcard;
-        if(!!data.data[0].F_Birthday){
-          that.F_Birthday = data.data[0].F_Birthday.split(' ')[0];
+        if(!!data.data[0].birthady){
+          that.F_Birthday = data.data[0].birthady;
         }else{
           that.F_Birthday ='请选择';
         }

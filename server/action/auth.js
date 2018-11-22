@@ -54,23 +54,40 @@ router.post('/register',(req,res)=>{
         return
     }
 
-    const  addSql = 'INSERT INTO student(studentID,password,NickName) VALUES(?,?,?)';
-    const  addSqlParams = [data.studentID, data.password,data.NickName];
-    //增
-    conn.query(addSql,addSqlParams,function (err, result) {
-        if(!err){
-            res.json(Object.assign(respond, {
-                success: true,
-                data: result,
-                messages: '插入成功',
-            }))
+    conn.query(`SELECT * from student where studentID = ${data.studentID}`, function (error, results, fields) {
+        if (!error){
+            if(results.length === 0){
+                const  addSql = 'INSERT INTO student(studentID,password,NickName) VALUES(?,?,?)';
+                const  addSqlParams = [data.studentID, data.password,data.NickName];
+                //增
+                conn.query(addSql,addSqlParams,function (err, result) {
+                    if(!err){
+                        res.json(Object.assign(respond, {
+                            success: true,
+                            data: result,
+                            messages: '插入成功',
+                        }))
+                    }else{
+                        res.json(Object.assign(respond, {
+                            data: err,
+                            messages: '插入失败 ',
+                        }))
+                    }
+                });
+            }else{
+                res.json(Object.assign(respond, {
+                    data: results,
+                    messages: data.studentID + '已存在',
+                }))
+            }
         }else{
             res.json(Object.assign(respond, {
-                data: err,
-                messages: '插入失败 ',
+                data: error,
+                messages: '取学生信息详情失败',
             }))
         }
     });
+
 })
 
 module.exports = router
