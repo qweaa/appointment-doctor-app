@@ -43,7 +43,7 @@ app.all('*', function(req, res, next) {
 })
 //图片加载,存储在public/images下的所有图片
 app.get('/upload/images/*', function (req, res) {
-    res.sendFile( __dirname + "/" + req.url );
+    res.sendFile( __dirname + "/" + req.url.split('?')[0] );
 })
 
 //actions
@@ -54,6 +54,7 @@ const book = require('./action/book')
 const home = require('./action/home')
 const note = require('./action/note')
 const order = require('./action/order')
+const upload = require('./action/upload')
 
 
 app.use('/student',student)
@@ -63,6 +64,7 @@ app.use('/book',book)
 app.use('/home',home)
 app.use('/note',note)
 app.use('/order',order)
+app.use('/upload',upload)
 
 
 

@@ -192,7 +192,13 @@ export default {
     },
     // url：订单请求地址;rows:请求一次返回的数据条数；page：页数
     GetOrderList(url,rows,page) {
-      var that = this;
+      this.$api.getOrderList().then(data=>{
+        
+      })
+
+
+
+      // var that = this;
       // this.$vux.loading.show({text: '加载中...'})
       // this.$http
       //   .get(url, {

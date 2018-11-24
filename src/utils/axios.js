@@ -5,7 +5,7 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-axios.defaults.baseURL = 'http://192.168.1.2:9093'
+axios.defaults.baseURL = 'http://192.168.3.253:9093'
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
@@ -50,19 +50,24 @@ function ajax(options){
         // params = '',
         timeout = 30 * 1000,
         responseType = 'json',
+        image = false,
     } = options
+
+    let headers = {
+        studentID: window.sessionStorage.getItem('studentID'),
+    }
+    if(image) headers['Content-Type'] = 'multipart/form-data'
 
     return new Promise((resolve, reject)=>{
         axios({
-        method: method,
-        url: url,
-        timeout: timeout,
-        params: data,
-        responseType: responseType,
-        headers: {
-            studentID: window.sessionStorage.getItem('studentID'),
-        }
-    }).then(res=>{
+            method: method,
+            url: url,
+            timeout: timeout,
+            params: data,
+            data: data,
+            responseType: responseType,
+            headers: headers
+        }).then(res=>{
             console.log('请求：'+(description || url)+' 成功')
             console.log('返回：', res)
             console.log('')
@@ -229,6 +234,14 @@ export default {
             data: {Code},
         })
     },
+    //取订单列表
+    getOrderList(options){
+        return ajax({
+            url: '/order/getOrderList',
+            description: '取订单列表',
+            data: options,
+        })
+    },
 
 
     //=====================================用户管理===================================
@@ -239,7 +252,29 @@ export default {
             description: '取学生信息详情',
             data: {studentID}
         })
-    }
+    },
+
+
+    //===========================================上传===================================
+    uploadImage(form){
+        // return new Promise((resolve, reject)=>{
+        //     axios.post('/upload/image',form,{headers: {'Content-Type': 'multipart/form-data'}}).then(data=>{
+        //         resolve(data)
+        //     }).catch(err=>{
+        //         reject(err)
+        //     })
+        // })
+
+        return ajax({
+            url: '/upload/image',
+            image: true,
+            method: 'post',
+            description: '上传图片',
+            data: form
+        })
+    },
+
+
     
 
 }

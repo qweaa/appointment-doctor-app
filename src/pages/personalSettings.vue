@@ -5,12 +5,13 @@
       <!-- <cell title="头像" class="userImg my-cell" is-link @click.native="showUserImg = true">
         <img slot="icon" :src="F_HeadIcon" alt="">
       </cell> -->
+        <input type="file" @change="onImageChange($event)" style="display: none" id="userImg">
       <label for="userImg" class="userImg">
-        <input type="file" style="display: none" id="userImg">
         <div class="title">头像</div>
         <div class="img">
           <div id="touxiang">
-            <img slot="icon" :src="F_HeadIcon" alt="">
+            <img slot="icon" v-if="imageBase64" :src="imageBase64" alt="">
+            <img slot="icon" v-else :src="F_HeadIcon" alt="">
           </div>
           <img src="../assets/images/list_icon_right.png" alt="">
         </div>
@@ -97,6 +98,9 @@ export default {
       F_HeadIcon: '',
       F_Birthday: '',
       F_IdCard: '',
+
+      imageFile: null,
+      imageBase64: '',
       // F_Address: "",
       // F_Healthy: ["健康"],
       // F_Height: 176,
@@ -104,6 +108,26 @@ export default {
     };
   },
   methods: {
+    onImageChange(ev){
+      let file = ev.target.files[0]
+
+      // 只选择图片文件
+      if (!file.type.match('image.*')) {
+        that.$vux.toast.show({
+          type: 'warn',
+          text: '请上传图片文件'
+        })
+        return
+      }
+
+      var reader = new FileReader();
+      // 渲染文件
+      reader.onload = (arg) => {
+        this.imageBase64 = arg.target.result
+        this.imageFile = file
+      }
+      reader.readAsDataURL(file); // 读取文件
+    },
     onChangeBirthday() {
       console.log(this.F_Birthday);
     },
@@ -148,6 +172,49 @@ export default {
         })
       }else{
         console.log("表单通过")
+
+        if(this.imageFile){
+          let formData = new FormData()
+          formData.append("file", this.imageFile, this.imageFile.name)
+          formData.append('chunk', '0')
+          this.$api.uploadImage(formData).then(imageData=>{
+            if(imageData.success){
+              this.$api.updateStudentModule({
+                studentID: window.sessionStorage.getItem('studentID'),
+                NickName: this.F_NickName,
+                gender: this.F_Gender[0] == '女' ? 2 : 1,
+                birthady: this.F_Birthday,
+                idcard: this.F_IdCard,
+                avatarUrl: imageData.data,
+              }).then(data=>{
+                if(data.success){
+                  this.$vux.toast.show({
+                    text: '修改个人信息成功',
+                    type: 'success'
+                  })
+                }
+              })
+            }
+          })
+        }else{
+          this.$api.updateStudentModule({
+            studentID: window.sessionStorage.getItem('studentID'),
+            NickName: this.F_NickName,
+            gender: this.F_Gender[0] == '女' ? 2 : 1,
+            birthady: this.F_Birthday,
+            idcard: this.F_IdCard,
+          }).then(data=>{
+            if(data.success){
+              this.$vux.toast.show({
+                text: '修改个人信息成功',
+                type: 'success'
+              })
+              window.setTimeout(_=>{
+                window.location.reload()
+              },1000)
+            }
+          })
+        }
         // var that = this;
         // var form_data = new FormData();
         // var file_data = $("#userImg").prop("files")[0];
@@ -162,21 +229,7 @@ export default {
         //     window.localStorage.removeItem("userInfo")
         // });
 
-        this.$api.updateStudentModule({
-          studentID: window.sessionStorage.getItem('studentID'),
-          NickName: this.F_NickName,
-          gender: this.F_Gender[0] == '女' ? 2 : 1,
-          birthady: this.F_Birthday,
-          idcard: this.F_IdCard,
-          // FileUrl: this.file_data,
-        }).then(data=>{
-          if(data.success){
-            this.$vux.toast.show({
-              text: '修改个人信息成功',
-              type: 'success'
-            })
-          }
-        })
+        
       }
     },
   },
@@ -201,7 +254,7 @@ export default {
         console.log("get",data)
 
         that.F_NickName = data.data[0].NickName;
-        that.F_HeadIcon = data.data[0].avatarUrl;
+        that.F_HeadIcon = data.data[0].avatarUrl
         that.F_Gender = data.data[0].gender ? data.data[0].gender == 1 ? ['男'] : ['女'] : [''];
         that.F_IdCard = data.data[0].idcard;
         if(!!data.data[0].birthady){
@@ -210,42 +263,7 @@ export default {
           that.F_Birthday ='请选择';
         }
       })
-      // getUserDetail((data)=>{
-      //   console.log("网络请求",data)
-      //   that.F_NickName = data.F_NickName;
-      //   that.F_HeadIcon = data.F_HeadIcon;
-      //   that.F_Gender = data.F_Gender ? ['男'] : ['女'];
-      //   that.F_IdCard = data.F_IdCard;
-      //   if(!!data.F_Birthday){
-      //     that.F_Birthday = data.F_Birthday.split(' ')[0];
-      //   }else{
-      //     that.F_Birthday ='请选择';
-      //   }
-      // })
     // }
-    $('#userImg').on('change',(e)=>{
-      var file = e.target.files[0]; //获取图片资源
-
-      // 只选择图片文件
-      if (!file.type.match('image.*')) {
-        that.$vux.toast.show({
-          type: 'warn',
-          text: '请上传图片文件'
-        })
-        console.log("请上传图片文件")
-        return false;
-      }
-
-      var reader = new FileReader();
-
-      reader.readAsDataURL(file); // 读取文件
-
-      // 渲染文件
-      reader.onload = function(arg) {
-        var img = '<img class="preview" src="' + arg.target.result + '" alt="preview"/>';
-        $("#touxiang").empty().append(img);
-      }
-    })
   }
 };
 </script>

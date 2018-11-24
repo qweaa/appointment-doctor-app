@@ -16,7 +16,7 @@ router.get('/getStudentModule', (req,res)=>{
         conn.query(`SELECT * from student where studentID = ${studentID}`, function (error, results, fields) {
             if (!error){
                 for(let i of results){
-                    i.avatarUrl = server_address + i.avatarUrl
+                    i.avatarUrl = server_address + i.avatarUrl + '?t=' + new Date().getTime();
                 }
                 res.json(Object.assign(respond, {
                     success: true,

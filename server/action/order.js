@@ -8,17 +8,17 @@ router.get('/getOrderList', (req,res)=>{
     const respond = JSON.parse(JSON.stringify(resp))
     // console.log("req.params: ",req.params)
     // console.log("req.query: ",req.query)
-    let status = req.query.status,
-        studentID = req.headers.studentID,
+    let status = req.query.status || 0,
+        studentID = req.headers.studentid,
         rows = req.query.rows || 10,
         page = req.query.page || 1
 
-    if(!status){
-        res.json(Object.assign(respond, {
-            messages: '请传入status变量值'
-        }))
-        return
-    }
+    // if(!status){
+    //     res.json(Object.assign(respond, {
+    //         messages: '请传入status变量值'
+    //     }))
+    //     return
+    // }
     if(!studentID){
         res.json(Object.assign(respond, {
             messages: '缺少studentID值'
