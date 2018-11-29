@@ -33,6 +33,7 @@
 <script>
 import mHeader from "../components/header";
 import { regexp } from "../utils/util";
+import { getDate } from "../utils/filter";
 export default {
   components: {
     mHeader
@@ -102,6 +103,7 @@ export default {
         'name': this.name,
         'idcard': this.idNumber,
         'phone': this.phoneNumber,
+        'book_time': this.appointmentInfo.start_time + '~' +this.appointmentInfo.end_time
       }).then(data=>{
         if(data.success){
           this.$vux.toast.show({
@@ -119,7 +121,7 @@ export default {
     if(window.localStorage.getItem('oysyBook')){
       this.appointmentInfo = JSON.parse(window.localStorage.getItem('oysyBook'))
       console.log("aaa",this.appointmentInfo)
-      this.DTime = this.appointmentInfo.date.replace('/','年').replace('/','月').replace('/','日') + ' ' + this.appointmentInfo.start_time
+      this.DTime = getDate(this.appointmentInfo.date).split(' ')[0] + ' ' + this.appointmentInfo.start_time + '~' +this.appointmentInfo.end_time
 
       this.$api.getDoctorDetail(this.appointmentInfo.doctor_id).then(data=>{
         this.doctor = data.data[0]

@@ -30,7 +30,13 @@ function formatMoney(Money){
   return Money
 }
 
+
+function getDate(t){
+  return new Date(Number(t)).toLocaleString('chinese',{hour12: false})
+}
+
 module.exports = {
     preToFixed: preToFixed,
-    formatMoney:formatMoney
+    formatMoney:formatMoney,
+    getDate,
 }

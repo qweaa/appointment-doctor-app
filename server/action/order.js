@@ -3,6 +3,9 @@ const router = express.Router()
 const conn = require('../model')
 const resp = require('../config').respond
 
+const serverConfig = require('../config').server
+const server_address = serverConfig.host
+
 //取订单列表
 router.get('/getOrderList', (req,res)=>{
     const respond = JSON.parse(JSON.stringify(resp))
@@ -26,8 +29,12 @@ router.get('/getOrderList', (req,res)=>{
         return
     }
 
-    conn.query(`SELECT * from order where student_id = ${studentID} AND status = ${status} limit ${(page - 1) * rows} , ${page * rows}`, function (error, results, fields) {
+    conn.query(`SELECT * from orderview where studentID = ${studentID} AND status = ${status} limit ${(page - 1) * rows} , ${page * rows}`, function (error, results, fields) {
         if (!error){
+            for(let i of results){
+                i.doctor_avatar = server_address + i.doctor_avatar
+                i.student_avatar = server_address + i.student_avatar
+            }
             res.json(Object.assign(respond, {
                 success: true,
                 data: results,
@@ -94,6 +101,7 @@ router.post('/submitOrder', (req,res)=>{
         'name',
         'idcard',
         'phone',
+        'book_time',
     ]
 
     const data = req.query
@@ -150,7 +158,7 @@ router.post('/submitOrder', (req,res)=>{
             console.log("定时时间",timeout)
             global['order'+code] = setTimeout(_=>{
                 let incode = code
-                conn.query('UPDATE `order` SET status = 1 WHERE code = ' + incode,function (err, result) {
+                conn.query('UPDATE `order` SET status = 1 , status_text = `已失效` WHERE code = ' + incode,function (err, result) {
                     let inincode = incode,
                         SqlSuccess = 0,
                         SqlResult = '',

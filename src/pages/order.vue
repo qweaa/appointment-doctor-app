@@ -17,33 +17,33 @@
         <div class="group" v-for="(item,index) of orderList" :key="index">
           <div class="gTitle">
             <div>
-              <img src="../assets/images/register_icon_shop.png" alt="">
-              {{item.ShopName}}
+              <img :src="item.doctor_avatar" alt="">
+              {{item.doctor_name}}
             </div>
-            <span>{{orderState}}</span>
+            <span>{{item.status_text}}</span>
           </div>
           <router-link to="###" class="orderInfo">
             <div>
-              <h4><img src="../assets/images/register_icon_me.png" alt=""> {{item.NickName}}</h4>
-              <p><img src="../assets/images/register_icon_time.png" alt=""> {{item.F_Date.split(' ')[0]}} {{item.ProductFieldsValue1}}</p>
+              <h4><img src="../assets/images/register_icon_me.png" alt=""> {{item.name}}</h4>
+              <p><img src="../assets/images/register_icon_time.png" alt=""> {{getDate(item.book_date).split(' ')[0] + ' ' + item.book_time}}</p>
             </div>
-            <span>¥ {{item.ActualPayMoney | formatMoney}}</span>
+            <span>¥ {{Number(item.book_price).toFixed(2)}}</span>
           </router-link>
           <div class="action">
             <template v-if="stateIndex === 0">
-              <button class="on" @click="pay(item.OrderNum)">立即支付</button>
-              <button @click="cancelOrder(0,item.OrderNum,index)">取消订单</button>
+              <button class="on" @click="pay(item.code)">立即支付</button>
+              <button @click="cancelOrder(0,item.code,index)">取消订单</button>
             </template>
             <template v-if="stateIndex === 1">
-              <button @click="cancelOrder(1,item.OrderNum,index)">删除订单</button>
+              <button @click="cancelOrder(1,item.code,index)">删除订单</button>
             </template>
             <template v-if="stateIndex === 2">
-              <button @click="cancelOrder(0,item.OrderNum,index)">取消订单</button>
+              <button @click="cancelOrder(0,item.code,index)">取消订单</button>
             </template>
             <template v-if="stateIndex === 3">
               <!-- <router-link :to="'/submitEvaluate?doctorId=' + item.DotorID" class="on">评价</router-link> -->
               <button v-if="!!item.IsComment" @click="lookComment">查看评价</button>
-              <button class="on" @click="comment(item.DotorID,item.OrderNum)" v-else >评价</button>
+              <button class="on" @click="comment(item.doctorID,item.code)" v-else >评价</button>
             </template>
           </div>
         </div>
@@ -58,7 +58,7 @@ import mHeader from "../components/header";
 import mFooter from "../components/footer";
 import mDefault from '../components/default'
 import $ from "webpack-zepto";
-import { formatMoney } from "../utils/filter";
+import { formatMoney, getDate } from "../utils/filter";
 import { LoadMore } from "vux";
 import {DeleteOrderCancel, getOrderCancel} from "../utils/request"
 export default {
@@ -178,6 +178,7 @@ export default {
     //   });
   },
   methods: {
+    getDate,
     //跳转支付页面
     pay(orderNumber){
       this.$router.push({path:'/payCenter',query:{OrderNum: orderNumber}})
@@ -193,7 +194,14 @@ export default {
     // url：订单请求地址;rows:请求一次返回的数据条数；page：页数
     GetOrderList(url,rows,page) {
       this.$api.getOrderList().then(data=>{
-        
+        if(data.success){
+          this.orderList = data.data
+        }else{
+          that.$vux.toast.show({
+              type: 'error',
+              text: data.messages || '请求订单列表数据失败'
+          })
+        }
       })
 
 
@@ -293,7 +301,8 @@ export default {
     next();
   },
   filters: {
-    formatMoney
+    formatMoney,
+    getDate
   }
 };
 </script>
