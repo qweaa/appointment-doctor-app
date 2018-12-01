@@ -5,7 +5,7 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-axios.defaults.baseURL = 'http://192.168.1.2:9093'
+axios.defaults.baseURL = 'http://192.168.3.253:9093'
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
@@ -240,6 +240,33 @@ export default {
             url: '/order/getOrderList',
             description: '取订单列表',
             data: options,
+        })
+    },
+    //取消订单
+    cancelOrder(options){
+        return ajax({
+            method: 'post',
+            url: '/order/cancelOrder',
+            description: '取消订单',
+            data: options,
+        })
+    },
+    //删除订单
+    deleteOrder(Code){
+        return ajax({
+            method: 'post',
+            url: '/order/deleteOrder',
+            description: '删除订单',
+            data: {Code},
+        })
+    },
+    //订单支付成功
+    payOrder(Code){
+        return ajax({
+            method: 'post',
+            url: '/order/payOrder',
+            description: '订单支付成功',
+            data: {Code},
         })
     },
 

@@ -114,11 +114,14 @@ export default {
     },
     //支付 / 充值
     submit(){
-      this.$vux.toast.show({
-        text: "微信支付",
-        type: "text"
-      });
-      console.log("立即支付")
+      this.$api.payOrder(this.OrderNum).then(data=>{
+        this.$router.push({
+          path:`/paySuccess`,
+          query:{
+            orderNumber: this.OrderNum
+          }
+        })
+      })
       return
 
 

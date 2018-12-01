@@ -3,10 +3,11 @@
     <m-header v-bind="headerData"></m-header>
     <div class="main">
       <img src="../assets/images/pay_icon_accomplish.png" alt="">
-      <p>成功支付{{cost.toFixed(2)}}元</p>
+      <p>成功支付</p>
       <span>{{ShopName}}</span>
     </div>
-    <router-link to="/" class="subButton">返回首页</router-link>
+    <router-link to="/" class="subButton backHome">返回首页</router-link>
+    <router-link to="/order" class="subButton">查看订单</router-link>
   </div>
 </template>
 <script>
@@ -26,34 +27,35 @@ export default {
     };
   },
   mounted() {
-    window.localStorage.removeItem("userInfo")
-    var orderNumber = this.$route.query.orderNumber;
-    if (!orderNumber) return;
-    this.$http
-      .get("/Order/GetOrderItem", {
-        params: {
-          OrderNum: orderNumber
-        }
-      })
-      .then(res => {
-        console.log(res)
-        if (res.data.state === "error") {
-          console.error(res.data.message);
-          this.$vux.toast.show({
-            text: res.data.message,
-            type: "warn"
-          });
-        } else {
-          this.cost = res.data.data.ItemList[0].TotalPrice
-          this.ShopName = res.data.data.ItemList[0].ShopName
-        }
-      }).catch(err=>{
-        console.log(err)
-      });
+    // window.localStorage.removeItem("userInfo")
+    // var orderNumber = this.$route.query.orderNumber;
+    // if (!orderNumber) return;
+    // this.$http
+    //   .get("/Order/GetOrderItem", {
+    //     params: {
+    //       OrderNum: orderNumber
+    //     }
+    //   })
+    //   .then(res => {
+    //     console.log(res)
+    //     if (res.data.state === "error") {
+    //       console.error(res.data.message);
+    //       this.$vux.toast.show({
+    //         text: res.data.message,
+    //         type: "warn"
+    //       });
+    //     } else {
+    //       this.cost = res.data.data.ItemList[0].TotalPrice
+    //       this.ShopName = res.data.data.ItemList[0].ShopName
+    //     }
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   });
   }
 };
 </script>
 <style lang="less" scoped>
+.backHome{background-color: white; color: #666; border: 1px solid #ccc;}
 .paySuccess {
   width: 7.5rem;
   .main {

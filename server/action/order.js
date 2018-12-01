@@ -29,7 +29,7 @@ router.get('/getOrderList', (req,res)=>{
         return
     }
 
-    conn.query(`SELECT * from orderview where studentID = ${studentID} AND status = ${status} limit ${(page - 1) * rows} , ${page * rows}`, function (error, results, fields) {
+    conn.query(`SELECT * from orderview where studentID = ${studentID} AND status = ${status} AND deleted = 0 limit ${(page - 1) * rows} , ${page * rows}`, function (error, results, fields) {
         if (!error){
             for(let i of results){
                 i.doctor_avatar = server_address + i.doctor_avatar
@@ -48,6 +48,95 @@ router.get('/getOrderList', (req,res)=>{
         }
     });
 
+})
+
+//取消订单
+router.post('/cancelOrder',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
+    // const studentID = req.headers.studentid
+    const data = req.query
+
+    if(!data.Code){
+        res.json(Object.assign(respond, {
+            messages: '请传入订单号'
+        }))
+        return
+    }
+
+    const lose_reason = data.reason || ''
+
+    conn.query('UPDATE `order` SET status = 4 , status_text = "已取消", lose_reason = "'+lose_reason+'" WHERE code = ' + data.Code,function (error, result) {
+        if (!error){
+            res.json(Object.assign(respond, {
+                success: true,
+                data: true,
+                messages: '取消订单成功',
+            }))
+        }else{
+            res.json(Object.assign(respond, {
+                data: error,
+                messages: '取消订单失败',
+            }))
+        }
+    })
+})
+
+//删除订单
+router.post('/deleteOrder',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
+    // const studentID = req.headers.studentid
+    const data = req.query
+
+    if(!data.Code){
+        res.json(Object.assign(respond, {
+            messages: '请传入订单号'
+        }))
+        return
+    }
+
+    conn.query('UPDATE `order` SET deleted = 1 WHERE code = ' + data.Code,function (error, result) {
+        if (!error){
+            res.json(Object.assign(respond, {
+                success: true,
+                data: true,
+                messages: '删除订单成功',
+            }))
+        }else{
+            res.json(Object.assign(respond, {
+                data: error,
+                messages: '删除订单失败',
+            }))
+        }
+    })
+})
+
+//订单支付成功
+router.post('/payOrder',(req,res)=>{
+    const respond = JSON.parse(JSON.stringify(resp))
+    // const studentID = req.headers.studentid
+    const data = req.query
+
+    if(!data.Code){
+        res.json(Object.assign(respond, {
+            messages: '请传入订单号'
+        }))
+        return
+    }
+
+    conn.query('UPDATE `order` SET status = 2, status_text = "已预约" WHERE code = ' + data.Code,function (error, result) {
+        if (!error){
+            res.json(Object.assign(respond, {
+                success: true,
+                data: true,
+                messages: '订单支付成功',
+            }))
+        }else{
+            res.json(Object.assign(respond, {
+                data: error,
+                messages: '订单支付成功 操作失败',
+            }))
+        }
+    })
 })
 
 //取订单详情
@@ -158,7 +247,7 @@ router.post('/submitOrder', (req,res)=>{
             console.log("定时时间",timeout)
             global['order'+code] = setTimeout(_=>{
                 let incode = code
-                conn.query('UPDATE `order` SET status = 1 , status_text = `已失效` WHERE code = ' + incode,function (err, result) {
+                conn.query('UPDATE `order` SET status = 1 , status_text = "已失效", lose_reason = "超时关闭" WHERE code = ' + incode,function (err, result) {
                     let inincode = incode,
                         SqlSuccess = 0,
                         SqlResult = '',

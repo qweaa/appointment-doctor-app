@@ -10,6 +10,7 @@
       <li>已失效</li>
       <li>已预约</li>
       <li>已完成</li>
+      <li>已取消</li>
     </ul>
     <div id="orderList">
       <m-default  v-if="orderList.length===0" :data="defaultData"></m-default>
@@ -34,7 +35,7 @@
               <button class="on" @click="pay(item.code)">立即支付</button>
               <button @click="cancelOrder(0,item.code,index)">取消订单</button>
             </template>
-            <template v-if="stateIndex === 1">
+            <template v-if="stateIndex === 1 || stateIndex == 4">
               <button @click="cancelOrder(1,item.code,index)">删除订单</button>
             </template>
             <template v-if="stateIndex === 2">
@@ -127,15 +128,17 @@ export default {
       that.hasMore = true
       that.rows = 6
       that.page = 1
-      if (that.stateIndex === 0) {
-        that.orderUrl = "/Order/GetOrderTempList"
-      } else if (that.stateIndex === 1) {
-        that.orderUrl = "/Order/GetOrderCancelList"
-      } else if (that.stateIndex === 2) {
-        that.orderUrl = "/Order/GetOrderTradeList"
-      } else if (that.stateIndex === 3) {
-        that.orderUrl = "/Order/GetOrderSuccessList"
-      }
+      // if (that.stateIndex === 0) {
+      //   that.orderUrl = "/Order/GetOrderTempList"
+      // } else if (that.stateIndex === 1) {
+      //   that.orderUrl = "/Order/GetOrderCancelList"
+      // } else if (that.stateIndex === 2) {
+      //   that.orderUrl = "/Order/GetOrderTradeList"
+      // } else if (that.stateIndex === 3) {
+      //   that.orderUrl = "/Order/GetOrderSuccessList"
+      // } else if (that.stateIndex === 4) {
+      //   that.orderUrl = "/Order/GetOrderSuccessList"
+      // }
       that.GetOrderList(that.orderUrl,that.rows,that.page);
     });
     // 绑定滚动事件
@@ -192,10 +195,16 @@ export default {
       this.$router.push({path:'/myEvaluate'})
     },
     // url：订单请求地址;rows:请求一次返回的数据条数；page：页数
-    GetOrderList(url,rows,page) {
-      this.$api.getOrderList().then(data=>{
+    GetOrderList(code) {
+      this.$api.getOrderList({
+        status: this.stateIndex,
+        page: this.page,
+        rows: this.rows,
+      }).then(data=>{
+        if(data.data.length < this.rows) this.hasMore = false
         if(data.success){
-          this.orderList = data.data
+          if(code) this.orderList = this.orderList.concat(data.data)
+          else this.orderList = data.data
         }else{
           that.$vux.toast.show({
               type: 'error',
@@ -203,45 +212,6 @@ export default {
           })
         }
       })
-
-
-
-      // var that = this;
-      // this.$vux.loading.show({text: '加载中...'})
-      // this.$http
-      //   .get(url, {
-      //     params: {
-      //       rows: rows,
-      //       page: page
-      //     }
-      //   })
-      //   .then(res => {
-      //     console.log(res)
-      //     if (res.data.state === "info") {
-      //       if(res.data.data.rows){
-      //         this.orderList = this.orderList.concat(res.data.data.rows);
-      //       }
-      //       if(res.data.data.rows.length < this.rows){
-      //         this.hasMore = false
-      //       }
-      //       this.showLoading&&(this.showLoading = false)
-      //     } else {
-      //       console.error(res.data.message);
-      //       that.$vux.toast.show({
-      //           type: 'warn',
-      //           text: '服务器开小差，请稍后重试'
-      //       })
-      //     }
-      //     that.$vux.loading.hide()
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //     that.$vux.toast.show({
-      //         type: 'warn',
-      //         text: '网络走丢了，请稍后重试'
-      //     })
-      //     that.$vux.loading.hide()
-      //   });
     },
     //加载更多
     loadMore() {
@@ -250,7 +220,7 @@ export default {
       }
       this.showLoading = true;
       this.page++;
-      this.GetOrderList(this.orderUrl,this.rows,this.page);
+      this.GetOrderList(1);
     },
     //取消或删除订单
     cancelOrder(code,OrderNum,index){
@@ -261,16 +231,23 @@ export default {
         this.$vux.confirm.prompt('取消原因', {
           title: "取消提示",
           content: '确定取消该订单吗？',
-          onCancel () {
+          onCancel: () => {
             console.log("用户点击了取消")
           },
-          onConfirm (reason) {
+          onConfirm: (reason) => {
             if(reason != ''){
               console.log("取消原因",reason)
-              getOrderCancel(OrderNum,reason,function(data){
-                that.orderList.splice(index,1);
-                window.localStorage.removeItem("userInfo")          //清除本地存储个人信息
+              this.$api.cancelOrder({
+                Code: OrderNum,
+                reason: reason,
+              }).then(data=>{
+                console.log('取消成功')
+                this.orderList.splice(index,1);
               })
+              // getOrderCancel(OrderNum,reason,function(data){
+              //   that.orderList.splice(index,1);
+              //   window.localStorage.removeItem("userInfo")          //清除本地存储个人信息
+              // })
             }else{
               that.$vux.toast.show({
                 type: 'cancel',
@@ -284,12 +261,12 @@ export default {
         this.$vux.confirm.show({
           title: "删除提示",
           content: '确定删除该订单吗？',
-          onCancel () {
+          onCancel: () => {
             console.log("用户点击了取消")
           },
-          onConfirm () {
-            DeleteOrderCancel(OrderNum,(data)=>{
-              that.orderList.splice(index,1);
+          onConfirm: () => {
+            this.$api.deleteOrder(OrderNum).then(data=>{
+              this.orderList.splice(index,1);
             })
           }
         })
