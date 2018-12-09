@@ -98,10 +98,10 @@ export default {
     this.doctorID = this.$route.query.doctorId
     this.OrderNum = this.$route.query.OrderNum
     console.log(this.doctorID)
-    getDoctorDetail(this.doctorID,(data)=>{
-      console.log(data)
-      this.doctorInfo = data;
-    })
+    // getDoctorDetail(this.doctorID,(data)=>{
+    //   console.log(data)
+    //   this.doctorInfo = data;
+    // })
   },
 };
 </script>

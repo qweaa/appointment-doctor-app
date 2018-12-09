@@ -298,7 +298,7 @@ export default {
     position: fixed;
     top: 0;
     z-index: 99;
-    border-bottom: 0.01rem solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
   }
 }
 .banner {
@@ -328,7 +328,7 @@ export default {
 }
 #nav {
   height: 0.88rem;
-  border-bottom: 0.01rem solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
   box-sizing: border-box;
   width: 100%;
   background-color: #fff;
@@ -369,7 +369,7 @@ export default {
     box-sizing: border-box;
     margin: 0;
     font-size: 0.28rem;
-    border-bottom: 0.01rem solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     > div {
       display: flex;
       align-items: center;
@@ -419,7 +419,7 @@ export default {
     }
   }
   .action {
-    border-top: 0.01rem solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
     width: 7.2rem;
     margin-left: 0.3rem;
     height: 0.98rem;
@@ -433,13 +433,13 @@ export default {
       width: 1.5rem;
       height: 0.56rem;
       border-radius: 0.1rem;
-      border: 0.01rem solid #666;
+      border: 1px solid #666;
       margin-left: 0.1rem;
       color: #666;
       font-size: 0.24rem;
     }
     .on {
-      border: 0.01rem solid @primary-color;
+      border: 1px solid @primary-color;
       color: @primary-color;
     }
   }

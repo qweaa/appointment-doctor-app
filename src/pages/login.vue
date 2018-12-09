@@ -6,7 +6,7 @@
           <img src="../assets/images/logo.png" alt="头像">
       </div>
       <group>
-        <x-input type="number" class="weui-vcode" v-model="studentID"  @on-blur="checkStudentID" placeholder="请输入学号"></x-input>
+        <x-input class="weui-vcode" v-model="studentID"  @on-blur="checkStudentID" placeholder="请输入学号"></x-input>
       </group>
       <group>
         <x-input type="password" class="weui-vcode" v-model="password" placeholder="请输入密码"></x-input>
