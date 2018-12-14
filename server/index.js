@@ -55,6 +55,7 @@ const home = require('./action/home')
 const note = require('./action/note')
 const order = require('./action/order')
 const upload = require('./action/upload')
+const comment = require('./action/comment')
 
 
 app.use('/student',student)
@@ -65,6 +66,7 @@ app.use('/home',home)
 app.use('/note',note)
 app.use('/order',order)
 app.use('/upload',upload)
+app.use('/comment',comment)
 
 
 

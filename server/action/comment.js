@@ -7,9 +7,10 @@ const serverConfig = require('../config').server
 const server_address = serverConfig.host
 
 //取banner
-router.get('/submitComment', (req,res)=>{
+router.post('/submitComment', (req,res)=>{
     const data = req.query
     const respond = JSON.parse(JSON.stringify(resp))
+    const studentID = req.headers.studentid
 
     if(!data.doctorID){
         res.json(Object.assign(respond, {
@@ -18,47 +19,27 @@ router.get('/submitComment', (req,res)=>{
         return
     }
 
-    const  addSql = 'INSERT INTO student(studentID,password,NickName) VALUES(?,?,?)';
-    const  addSqlParams = [data.studentID, data.password,data.NickName];
+    const now = new Date().getTime()
+
+    const  addSql = 'INSERT INTO comment(student_id,doctor_id,order_code,content,evaluate,create_time) VALUES(?,?,?,?,?,?)';
+    const  addSqlParams = [studentID, data.doctorID,data.orderCode,data.content,data.evaluate,now];
     //增
     conn.query(addSql,addSqlParams,function (err, result) {
         if(!err){
             res.json(Object.assign(respond, {
                 success: true,
                 data: result,
-                messages: '插入成功',
+                messages: '评论成功',
             }))
         }else{
             res.json(Object.assign(respond, {
                 data: err,
-                messages: '插入失败 ',
-            }))
-        }
-    });
-    
-    conn.query(`SELECT * from banner where used = 1`, function (error, results, fields) {
-        if (!error){
-            for(let i of results){
-                i.img = server_address + i.img
-            }
-            if(results.length === 0){
-                res.json(Object.assign(respond, {
-                    messages: '您还未设置banner图',
-                }))
-            }else{
-                res.json(Object.assign(respond, {
-                    success: true,
-                    data: results,
-                    messages: '取banner 图列表成功',
-                }))
-            }
-        }else{
-            res.json(Object.assign(respond, {
-                data: error,
-                messages: '取banner 图列表失败',
+                messages: '评论失败 ',
             }))
         }
     });
 })
+
+//取评论列表
 
 module.exports = router

@@ -4,11 +4,11 @@
   <div class="user-item group">
     <div to="###" class="item flex-center">
       <div class="left flex-center">
-        <img :src="doctorInfo.FileUrl" alt="">
+        <img :src="doctorInfo.avatarUrl" alt="">
       </div>
       <div class="middle">
         <h5 class="flex-center">{{doctorInfo.NickName}} <span>主任医师</span></h5>
-        <p class="ellipsis">{{doctorInfo.Detail}}</p>
+        <p class="ellipsis">{{doctorInfo.info}}</p>
       </div>
     </div>
   </div>
@@ -67,13 +67,7 @@ export default {
         title: "提交评价",
       },
       // thisMark:20,
-      doctorInfo: {
-        FileUrl: '',
-        Detail: '',
-        F_CreatorTime: '',
-        id: '',
-        NickName: ''
-      },
+      doctorInfo: {},
       OrderNum: '',
       inputdata: 5,
       comment: '',
@@ -82,15 +76,24 @@ export default {
   },
   methods: {
     submitComment(){
-      var that = this;
-      saveProComm(this.doctorID,this.OrderNum,this.inputdata,this.comment,function(data){
-        console.log(data)
-        that.$vux.toast.show({
-            type: 'success',
-            text: '发布成功'
+      if(!this.comment){
+        this.$vux.toast.show({
+            type: 'warn',
+            text: '请填写评价'
         })
-        // that.$router.push({path: '/order'})
-        that.$router.go(-1)
+        return
+      }
+      this.$api.submitComment({
+        doctorID: this.doctorID,
+        orderCode: this.orderCode,
+        content: this.comment,
+        evaluate: this.inputdata,
+      }).then(data=>{
+        this.$vux.toast.show({
+            type: 'success',
+            text: '评价成功'
+        })
+        this.$router.back(1)
       })
     },
   },
@@ -98,6 +101,9 @@ export default {
     this.doctorID = this.$route.query.doctorId
     this.OrderNum = this.$route.query.OrderNum
     console.log(this.doctorID)
+    this.$api.getDoctorDetail(this.doctorID).then(data=>{
+      this.doctorInfo = data.data[0]
+    })
     // getDoctorDetail(this.doctorID,(data)=>{
     //   console.log(data)
     //   this.doctorInfo = data;

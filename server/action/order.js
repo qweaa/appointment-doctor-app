@@ -125,11 +125,15 @@ router.post('/payOrder',(req,res)=>{
 
     conn.query('UPDATE `order` SET status = 2, status_text = "已预约" WHERE code = ' + data.Code,function (error, result) {
         if (!error){
+            //清除超时定时器
+            if(global['order'+data.Code]) clearTimeout(global['order'+data.Code])
+
             res.json(Object.assign(respond, {
                 success: true,
                 data: true,
                 messages: '订单支付成功',
             }))
+
         }else{
             res.json(Object.assign(respond, {
                 data: error,

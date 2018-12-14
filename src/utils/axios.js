@@ -5,7 +5,7 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-axios.defaults.baseURL = 'http://192.168.2.149:9093'
+axios.defaults.baseURL = 'http://192.168.1.7:9093'
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
@@ -298,6 +298,18 @@ export default {
             method: 'post',
             description: '上传图片',
             data: form
+        })
+    },
+
+
+    //======================评论==========================
+    submitComment(data){
+        return ajax({
+            url: '/comment/submitComment',
+            image: true,
+            method: 'post',
+            description: '提交评论',
+            data: data
         })
     },
 
