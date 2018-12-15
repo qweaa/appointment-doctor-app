@@ -132,6 +132,13 @@ const router = new Router({
         require(['../pages/voucherSuccess'], resolve)
       }
     },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: function (resolve) {
+        require(['../pages/orderDetail'], resolve)
+      }
+    },
   ]
 })
 

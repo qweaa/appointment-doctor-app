@@ -19,10 +19,10 @@ router.post('/submitComment', (req,res)=>{
         return
     }
 
-    const now = new Date().getTime()
+    const now = new Date().toLocaleString('chinese',{hour12: false})
 
-    const  addSql = 'INSERT INTO comment(student_id,doctor_id,order_code,content,evaluate,create_time) VALUES(?,?,?,?,?,?)';
-    const  addSqlParams = [studentID, data.doctorID,data.orderCode,data.content,data.evaluate,now];
+    const  addSql = 'UPDATE `order` SET isComment = 1, comment = ?, comment_time = ? WHERE code = ?';
+    const  addSqlParams = [data.content,now,Number(data.orderCode)];
     //增
     conn.query(addSql,addSqlParams,function (err, result) {
         if(!err){

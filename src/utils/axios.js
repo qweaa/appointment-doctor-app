@@ -74,7 +74,7 @@ function ajax(options){
             if(res.data.success){
                 resolve(res.data)
             }else{
-                let text = res.data.data === -2 ? '请登陆' : res.data.messages || '请求不被允许'
+                let text = res.data.data === -2 ? '请登陆' : res.data.messages || '请求错误'
                 Vue.$vux.toast.show({
                     type: 'warn',
                     text: text
@@ -85,7 +85,11 @@ function ajax(options){
             console.log('请求：'+ (description || url) + ' 失败')
             console.log('返回：', err)
             console.log('')
-            reject(err)
+            Vue.$vux.toast.show({
+                type: 'warn',
+                text: '网络异常，请稍后重试'
+            })
+            // reject(err)
         })
     })
 

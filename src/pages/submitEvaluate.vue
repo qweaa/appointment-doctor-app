@@ -85,7 +85,7 @@ export default {
       }
       this.$api.submitComment({
         doctorID: this.doctorID,
-        orderCode: this.orderCode,
+        orderCode: this.OrderNum,
         content: this.comment,
         evaluate: this.inputdata,
       }).then(data=>{

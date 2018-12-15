@@ -23,7 +23,7 @@
             </div>
             <span>{{item.status_text}}</span>
           </div>
-          <router-link to="###" class="orderInfo">
+          <router-link :to="'/orderDetail?ordercode=' + item.code" class="orderInfo">
             <div>
               <h4><img src="../assets/images/register_icon_me.png" alt=""> {{item.name}}</h4>
               <p><img src="../assets/images/register_icon_time.png" alt=""> {{getDate(item.book_date).split(' ')[0] + ' ' + item.book_time}}</p>
@@ -43,7 +43,8 @@
             </template>
             <template v-if="stateIndex === 3">
               <!-- <router-link :to="'/submitEvaluate?doctorId=' + item.DotorID" class="on">评价</router-link> -->
-              <button v-if="!!item.IsComment" @click="lookComment">查看评价</button>
+              <!-- <button v-if="!!item.isComment" @click="lookComment">查看评价</button> -->
+              <button v-if="!!item.isComment" @click="lookComment(item.code)">已评价</button>
               <button class="on" @click="comment(item.doctorID,item.code)" v-else >评价</button>
             </template>
           </div>
@@ -191,8 +192,8 @@ export default {
       this.$router.push({path:'/submitEvaluate',query:{doctorId: DotorID,OrderNum:OrderNum}})
     },
     //跳转到我的评论
-    lookComment(){
-      this.$router.push({path:'/myEvaluate'})
+    lookComment(code){
+      this.$router.push({path:'/orderDetail',query:{ordercode: code}})
     },
     // url：订单请求地址;rows:请求一次返回的数据条数；page：页数
     GetOrderList(code) {
