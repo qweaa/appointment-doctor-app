@@ -40,21 +40,21 @@ export default {
   data() {
     return {
       menus: [
-        {
-          title: "系统设置",
-          link: "/setting",
-          icon: require("../assets/images/me_icon_setup.png")
-        },
-        {
-          title: "评价管理",
-          link: "/myEvaluate",
-          icon: require("../assets/images/me_icon_evaluate.png")
-        },
-        {
-          title: "我的病历",
-          link: "/myEvaluate",
-          icon: require("../assets/images/me_icon_register.png")
-        },
+        // {
+        //   title: "系统设置",
+        //   link: "/setting",
+        //   icon: require("../assets/images/me_icon_setup.png")
+        // },
+        // {
+        //   title: "评价管理",
+        //   link: "/myEvaluate",
+        //   icon: require("../assets/images/me_icon_evaluate.png")
+        // },
+        // {
+        //   title: "我的病历",
+        //   link: "/myEvaluate",
+        //   icon: require("../assets/images/me_icon_register.png")
+        // },
       ],
       UserInfo: {}
     };

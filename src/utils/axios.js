@@ -96,20 +96,6 @@ function ajax(options){
 }
 
 export default {
-    getRecommend(data = {a: 1}){
-        return ajax({
-            url: '/doctor/getRecommentsList',
-            description: '取推荐 医师 列表',
-            data: data
-        })
-    },
-    getRecommendDoctor(data = {a: 1}){
-        return ajax({
-            url: '/doctor/getRecommentsList',
-            description: '取推荐 医师 列表',
-            data: data
-        })
-    },
     getNotcomList(data={a:1}){
         return ajax({
             url: '/note/getNotesList',
@@ -125,7 +111,7 @@ export default {
         })
     },
     //搜索医师
-    getDoctorList(key = '1'){
+    getDoctorSearchList(key = '1'){
         return ajax({
             url: '/doctor/getSearch',
             description: '搜索医师',
@@ -189,7 +175,20 @@ export default {
     },
 
     //==================医师================
-
+    getRecommend(data){
+        return ajax({
+            url: '/doctor/getRecommentsList',
+            description: '取推荐 医师 列表',
+            data: data
+        })
+    },
+    getRecommendDoctor(data){
+        return ajax({
+            url: '/doctor/getRecommentsList',
+            description: '取推荐 医师 列表',
+            data: data
+        })
+    },
     //取医师详细信息
     getDoctorDetail(doctorID){
         return ajax({
@@ -208,6 +207,13 @@ export default {
             url: '/book/getBookList',
             description: '取医师预约时间列表',
             data: {doctorID: id,date},
+        })
+    },
+    //取医师列表
+    getDoctorList(){
+        return ajax({
+            url: '/doctor/getDoctorList',
+            description: '取医师列表',
         })
     },
 

@@ -100,7 +100,7 @@
             <div class="searchDoctor" v-if="searchList.doctorList.length != 0">
                 <p>医师</p>
                 <transition-group name="slide-fade">
-                    <router-link :to="'/doctor?doctorId='+v.id" class="item" v-for="(v,i) in searchList.doctorList" :key="v.id">{{v.NickName}}</router-link>
+                    <router-link :to="'/doctor?doctorId='+v.doctorID" class="item" v-for="(v,i) in searchList.doctorList" :key="v.doctorID">{{v.NickName}}</router-link>
                 </transition-group>
             </div><!-- 医师 END -->
             <transition name="slide-fade">
@@ -215,7 +215,7 @@ export default {
                     //     console.log("门店",data)
                     //     that.searchList.storeList = data;
                     // });
-                    this.$api.getDoctorList(this.searchWord).then(data=>{
+                    this.$api.getDoctorSearchList(this.searchWord).then(data=>{
                         if(data.data){
                             if(data.data.length == 0) this.searchnone = true
                             // that.searchList.doctorList = []

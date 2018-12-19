@@ -3,7 +3,7 @@
     <h1>订单</h1>
     <div class="banner">
       <img :src="banner" alt="">
-      <p>亲爱的小伙伴，欢迎欢迎光临养生中医</p>
+      <p>亲爱的小伙伴，欢迎光临</p>
     </div>
     <ul id="nav">
       <li class="active">待付款</li>
