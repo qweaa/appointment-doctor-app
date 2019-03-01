@@ -8,7 +8,7 @@ import {GetQueryString} from '../utils/util'
 import axios from 'axios'
 
 const config = {
-    http: window.location.href.indexOf('192.168.3')===-1?'http://x_zyys.b2co.cn':'http://192.168.3.101',
+    http: window.location.href.indexOf('192.168.3')===-1?'http://x_zyys.b2co.cn':'http://192.168.1.11',
 
     /*---- 首页模块 START----*/
     getRecommend: '/ECA/GetRecommendJson',          //获得推荐门店列表
