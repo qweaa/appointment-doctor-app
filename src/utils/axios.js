@@ -5,7 +5,8 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-axios.defaults.baseURL = 'http://118.24.61.236:9093'
+// axios.defaults.baseURL = 'http://118.24.61.236:9093'
+axios.defaults.baseURL = 'http://192.168.1.4:9093'
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器
@@ -207,6 +208,18 @@ export default {
             url: '/book/getBookList',
             description: '取医师预约时间列表',
             data: {doctorID: id,date},
+        })
+    },
+    //通过week取医师预约时间列表
+    getBookListByWeek(options){
+        let {
+            id = '',
+            week = '',
+        } = options
+        return ajax({
+            url: '/book/getBookListByWeek',
+            description: '通过week取医师预约时间列表',
+            data: {doctorID: id,week},
         })
     },
     //取医师列表

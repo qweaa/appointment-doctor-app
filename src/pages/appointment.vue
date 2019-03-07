@@ -46,9 +46,12 @@ export default {
         share: false
       },
       doctor: '',
-      name: "",
-      idNumber: "",
-      phoneNumber: "",
+      // name: "",
+      // idNumber: "",
+      // phoneNumber: "",
+      name: "测试",
+      idNumber: "440184122512451241",
+      phoneNumber: "13726445124",
       appointmentInfo: {},
       DTime: ""
     };
@@ -98,7 +101,8 @@ export default {
       this.$api.submitOrder({
         'doctorID': this.doctor.doctorID,
         'book_id': this.appointmentInfo.id,
-        'book_date': this.appointmentInfo.date,
+        // 'book_date': this.appointmentInfo.date,
+        'book_date': this.appointmentInfo.appointmentDate,
         'book_price': this.appointmentInfo.price,
         'name': this.name,
         'idcard': this.idNumber,

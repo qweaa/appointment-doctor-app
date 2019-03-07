@@ -91,7 +91,8 @@ export default {
         }
         if(this.doctorId){
             this.getDoctorSchedul(
-                date[0].year+'-'+date[0].date,
+                date[0].weekValue,
+                // date[0].year+'-'+date[0].date,
                 date[0].year+'-'+date[0].date
             )
         }
@@ -99,6 +100,8 @@ export default {
     methods:{
         //跳转预约页面
         gotoAppoint(v){
+            let date = new Date(this.dateList[this.dateTab].time).getTime()
+            v.appointmentDate = date
             window.localStorage.setItem('oysyBook',JSON.stringify(v))
             this.$router.push('/appointment')
         },
@@ -109,10 +112,15 @@ export default {
                 nowTime = now.getTime(),
                 startTime;
             for(let i of result){
-                if(i.date > nowTime){
+                if(this.dateList[this.dateTab].timeValue > nowTime){
                     i.outTime = false
                     continue
                 }
+
+                // if(i.date > nowTime){
+                //     i.outTime = false
+                //     continue
+                // }
                 startTime = new Date(now.toLocaleDateString() + ' ' + i.start_time).getTime();
                 if(startTime < nowTime){
                     i.outTime = true;
@@ -128,6 +136,25 @@ export default {
         //单个医师排班列表
         getDoctorSchedul(start,end){
             var that = this;
+            this.$api.getBookListByWeek({
+                id: this.doctorId,
+                week: start,
+            }).then(data=>{
+                console.log(data.data)
+                if(data.data && data.data.length > 0){
+                    console.log("00",new Date(start + ' 00:00:00').getTime(), new Date().getTime())
+                    if(new Date(start + ' 00:00:00').getTime() > new Date().getTime()){
+                        for(let i of data.data){
+                            i.outTime = false
+                        }
+                        this.bookList = data.data
+                    }else{
+                        this.bookList = this.setOutTime(data.data)
+                    }
+                }
+                console.log("000",this.bookList)
+            })
+            return
             this.$api.getDoctorBooks({
                 id: this.doctorId,
                 date: start,
@@ -170,7 +197,7 @@ export default {
             var date = this.dateList[i];
             this.dateTab = i;
             if(this.ecaid) this.getECASchedul(date.year+'-'+date.date,date.year+'-'+date.date)
-            else if(this.doctorId) this.getDoctorSchedul(date.year+'-'+date.date,date.year+'-'+date.date)
+            else if(this.doctorId) this.getDoctorSchedul(date.weekValue,date.year+'-'+date.date)
         },
     },
     watch:{
@@ -184,7 +211,7 @@ export default {
         doctorId: function(){
             let date = this.dateList[0];
             this.getDoctorSchedul(
-                date.year+'-'+date.date,
+                date.weekValue,
                 date.year+'-'+date.date
             )
         }

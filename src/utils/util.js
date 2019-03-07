@@ -66,7 +66,10 @@ function getFuture(n){
       time.push({
           year: tmp.getFullYear(),
           date: preToFixed(tmp.getMonth() + 1,2) + '-' + preToFixed(tmp.getDate(),2),
-          week: weekStr[tmp.getDay()]
+          week: weekStr[tmp.getDay()],
+          weekValue: tmp.getDay(),
+          time: tmp.toLocaleDateString(),
+          timeValue: tmp.getTime(),
       })
   }
 //   time.year = year;
