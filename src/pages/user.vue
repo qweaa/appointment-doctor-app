@@ -19,7 +19,7 @@
       </cell>
     </group>
     <group id="menus">
-      <cell @click.native="logout" title="退出登陆">
+      <cell @click.native="logout" title="退出登录">
         <img slot="icon" src="../assets/images/me_icon_exit.png" alt="">
       </cell>
     </group>
@@ -62,8 +62,8 @@ export default {
   methods: {
     logout(){
       this.$vux.confirm.show({
-        title: '退出登陆提示',
-        content: '确定需要退出登陆吗？',
+        title: '退出登录提示',
+        content: '确定需要退出登录吗？',
         onConfirm: _=>{
           window.sessionStorage.removeItem('studentID')
           this.$vux.toast.show({

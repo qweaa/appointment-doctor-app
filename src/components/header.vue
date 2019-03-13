@@ -201,6 +201,15 @@ export default {
         //搜索
         takeSearch(){
             if(this.searchWord != ''){
+                var that = this
+                this.$api.getDoctorSearchList(this.searchWord).then(data=>{
+                    if(data.data){
+                        if(data.data.length == 0) this.searchnone = true
+                        // that.searchList.doctorList = []
+                        that.searchList.doctorList = data.data;
+                    }
+                })
+                return
                 if(this.$store.state.local.local.state){
                     var that = this,
                         local = this.$store.state.local.local;

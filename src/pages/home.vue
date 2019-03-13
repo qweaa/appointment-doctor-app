@@ -60,18 +60,18 @@
       <swiper-item v-for="(v,i) in trumpetList" :key="i">
         <div @click="showTrumpe(i)" class="text-content">
           <img src="../assets/images/home_icon_trumpet.png" alt="">
-          <span class="ellipsis">{{v.NoticeContent}}</span>
+          <span class="ellipsis">{{v.title}}</span>
         </div>
       </swiper-item>
     </swiper><!-- 垂直文字的滚动 END -->
     <!-- 推荐店铺 START -->
-    <div class="recommendhead">您好，系统为您推荐的优质服务门店</div>
+    <div class="recommendhead">您好，系统为您推荐的优质服务医师</div>
     <!-- <store-item :storeList="storeList" class="group"></store-item> -->
      <doctor-item :doctorList="doctorList" class="group"></doctor-item> 
     <!-- 推荐店铺 END -->
     <!-- 公告弹窗 -->
     <popup v-model="trumpePopup"  position="left" width="100%" class="trumpePopup">
-      <div class="tru-head">公告</div>
+      <div class="tru-head">{{trumpeDetail.title || '公告'}}</div>
       <div class="tru-cont">
         <p>{{trumpeDetail.NoticeContent}}</p>
         <p class="tru-time">{{trumpeDetail.F_CreatorTime}}</p>

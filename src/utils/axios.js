@@ -5,8 +5,8 @@ import  { ToastPlugin, LoadingPlugin } from 'vux'
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 
-// axios.defaults.baseURL = 'http://118.24.61.236:9093'
-axios.defaults.baseURL = 'http://192.168.1.4:9093'
+axios.defaults.baseURL = 'http://118.24.61.236:9093'
+// axios.defaults.baseURL = 'http://192.168.1.4:9093'
 // axios.defaults.headers.common['studentID'] = window.sessionStorage.getItem('studentID') || '';
 
 // 添加请求拦截器

@@ -53,7 +53,7 @@ export default {
                     link: '/',
                     defaultIcon: require("../assets/images/tab/tab_icon_location_normal.png"),
                     activeIcon: require("../assets/images/tab/tab_icon_location_selected.png"),
-                    title: '附近',
+                    title: '首页',
                 },
                 {
                     link: '/store',

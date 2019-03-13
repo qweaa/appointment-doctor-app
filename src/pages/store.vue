@@ -122,6 +122,10 @@ export default {
             //     that.storeList = data;
             //     console.log('getECAList',data)
             // })
+        }else{
+            this.$api.getDoctorList().then(data=>{
+                this.storeList = data.data
+            })
         }
     }
 }

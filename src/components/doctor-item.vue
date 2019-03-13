@@ -29,7 +29,7 @@
                 <p>关注数: {{v.follow}} 好评率{{v.evaluate}}%</p>
             </div>
             <div class="right center-flex">
-            <router-link :to="'/doctor?doctorId='+v.doctorID">立即质询</router-link>
+            <router-link :to="'/doctor?doctorId='+v.doctorID">立即预约</router-link>
             </div>
         </div>
     </div>

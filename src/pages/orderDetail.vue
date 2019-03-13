@@ -63,7 +63,7 @@
                     <cell title="预约单号" :value="order.code"></cell>
                     <cell title="下单时间" :value="getTime(Number(order.create_time))"></cell>
                     <cell title="预约医师" :value="order.doctor_name"></cell>
-                    <cell title="预约定金" :value="order.book_price"></cell>
+                    <cell title="挂号费" :value="order.book_price"></cell>
                 </template>
             </group>
 
