@@ -178,7 +178,6 @@ import mHeader from '../components/header';
 import schedul from '../components/select-ECA-schedul'
 import {preToFixed} from '../utils/filter'
 import mDefault from '../components/default'
-const {getECAInfo,getECAScheduling,getECADoctorList} = require("../utils/request")
 export default {
     components:{
         mHeader,

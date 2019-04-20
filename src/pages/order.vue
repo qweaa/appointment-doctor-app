@@ -62,7 +62,6 @@ import mDefault from '../components/default'
 import $ from "webpack-zepto";
 import { formatMoney, getDate } from "../utils/filter";
 import { LoadMore } from "vux";
-import {DeleteOrderCancel, getOrderCancel} from "../utils/request"
 export default {
   data() {
     return {
@@ -245,10 +244,6 @@ export default {
                 console.log('取消成功')
                 this.orderList.splice(index,1);
               })
-              // getOrderCancel(OrderNum,reason,function(data){
-              //   that.orderList.splice(index,1);
-              //   window.localStorage.removeItem("userInfo")          //清除本地存储个人信息
-              // })
             }else{
               that.$vux.toast.show({
                 type: 'cancel',

@@ -60,7 +60,6 @@
 <script>
 import {getFuture} from '../utils/util';
 import defaultPage from '../components/default'
-const {getECAScheduling, getDoctorScheduling} = require("../utils/request")
 export default {
     components:{
         defaultPage,
@@ -180,9 +179,10 @@ export default {
         //请求ECA店医师排班列表
         getECASchedul(start,end){
             var that = this;
-            getECAScheduling(this.ecaid,start,end,function(data){
-                that.setBookList(that.setOutTime(data))
-            })
+            console.log("根据医院取医师待开发")
+            // getECAScheduling(this.ecaid,start,end,function(data){
+            //     that.setBookList(that.setOutTime(data))
+            // })
         },
         //点击日期选择ECA列表
         /*

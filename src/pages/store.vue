@@ -20,7 +20,6 @@ import mHeader from '../components/header';
 import mFooter from '../components/footer'
 import storeItem from '../components/store-item'
 import doctorItem from "../components/doctor-item";
-const {getECAList} = require("../utils/request")
 
 export default {
     components:{
@@ -63,26 +62,6 @@ export default {
                 this.$api.getDoctorList().then(data=>{
                     this.storeList = data.data
                 })
-                // getECAList({    //val.province,val.city,val.lng,val.lat
-                //     province: val.province,
-                //     city: val.city,
-                //     lng: val.lng,
-                //     lat: val.lat,
-                // },function(data){
-                //     for(let i of data){
-                //         pointStore = new BMap.Point(i.Longitude,i.Latitude)
-                //         distance = parseFloat(BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2));
-                //         console.log(distance)
-                //         if(distance > 1000){
-                //             distance = parseFloat((distance/1000).toFixed(2)) + '千米'
-                //         }else{
-                //             distance = distance + '米'
-                //         }
-                //         i.distance = distance;
-                //     }
-                //     that.storeList = data;
-                //     console.log('getECAList',data)
-                // })
             }
         },
         inSearch(){
@@ -103,25 +82,6 @@ export default {
             this.$api.getDoctorList().then(data=>{
                 this.storeList = data.data
             })
-            // getECAList({
-            //     province: local.province,
-            //     city: local.city,
-            //     lng: local.lng,
-            //     lat: local.lat,
-            // },function(data){
-            //     for(let i of data){
-            //         pointStore = new BMap.Point(i.Longitude,i.Latitude)
-            //         distance = parseFloat(BMapLib.GeoUtils.getDistance(pointLocal, pointStore).toFixed(2));
-            //         if(distance > 1000){
-            //             distance = parseFloat((distance/1000).toFixed(2)) + '千米'
-            //         }else{
-            //             distance = distance + '米'
-            //         }
-            //         i.distance = distance;
-            //     }
-            //     that.storeList = data;
-            //     console.log('getECAList',data)
-            // })
         }else{
             this.$api.getDoctorList().then(data=>{
                 this.storeList = data.data

@@ -30,7 +30,6 @@
 <script>
 import mHeader from "../components/header";
 import mDefault from '../components/default';
-import {getPrucomList} from '../utils/request'
 export default {
   components: {
     mHeader,
@@ -64,10 +63,10 @@ export default {
   methods: {},
   mounted(){
     var that = this;
-    getPrucomList(function(data){
-      console.log('评论:',data)
-      that.commentList = data.ProList
-    })
+    // getPrucomList(function(data){
+    //   console.log('评论:',data)
+    //   that.commentList = data.ProList
+    // })
   }
 };
 </script>

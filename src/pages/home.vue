@@ -89,7 +89,6 @@ import mHeader from "../components/header";
 import storeItem from "../components/store-item";
 import doctorItem from "../components/doctor-item";
 import { GetQueryString } from "../utils/util";
-const { getRecommend,getNotcomList,testMock } = require("../utils/request");
 export default {
   components: {
     mFooter,

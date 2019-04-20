@@ -39,13 +39,6 @@ const router = new Router({
       }
     },
     {
-      path: '/setting',
-      name: 'setting',
-      component: resolve => {
-        require(['../pages/setting.vue'], resolve)
-      }
-    },
-    {
       path: '/appointment',
       name: 'appointment',
       component: function (resolve) {

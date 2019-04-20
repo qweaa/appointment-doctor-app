@@ -48,7 +48,6 @@
 <script>
 import mHeader from "../components/header";
 import { Box, XButton, Clocker, Cell,Group } from "vux";
-import {postPay,getOrderDetail} from '../utils/request'
 export default {
   components: {
     mHeader,
@@ -85,15 +84,6 @@ export default {
         that.time = this.getEndTime(Number(data.data.create_time));
       }
     })
-    // getOrderDetail(this.OrderNum,(data)=>{
-    //   console.log(data)
-    //   that.balance = data.ValidMoney;
-    //   that.cost = data.ActualPayMoney;
-    //   that.doctor = data.ItemList[0].Title
-    //   that.F_CreatorTime = new Date(data.create_time).toLocaleString('chinese',{hour12:false})
-    //   that.time = this.getEndTime(data.create_time);
-    //   that.changeState()
-    // })
   },
   mounted(){
   },
@@ -122,25 +112,6 @@ export default {
           }
         })
       })
-      return
-
-
-      if(this.cost>this.balance){
-        this.$router.push({
-          path:`user/userName/voucherCenter`
-        })
-      }else{
-        var that = this;
-        postPay([{OrderNum:this.OrderNum}],(data)=>{
-          console.log(data)
-          this.$router.push({
-            path:`/paySuccess`,
-            query:{
-              orderNumber: that.OrderNum
-            }
-          })
-        })
-      }
     }
   }
 };

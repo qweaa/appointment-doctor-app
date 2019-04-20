@@ -51,7 +51,6 @@
 import mHeader from "../components/header";
 import { Group, Box, XTextarea, XButton } from "vux";
 import $ from "webpack-zepto";
-import {saveProComm,getDoctorDetail} from '../utils/request'
 export default {
   components: {
     mHeader,
@@ -104,10 +103,6 @@ export default {
     this.$api.getDoctorDetail(this.doctorID).then(data=>{
       this.doctorInfo = data.data[0]
     })
-    // getDoctorDetail(this.doctorID,(data)=>{
-    //   console.log(data)
-    //   this.doctorInfo = data;
-    // })
   },
 };
 </script>

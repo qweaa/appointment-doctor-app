@@ -61,7 +61,6 @@
 import { regexp } from "../utils/util";
 import mHeader from "../components/header";
 import { Group, Calendar, Actionsheet, XInput, Cell, Picker, Popup, Datetime} from "vux";
-import {getUserDetail,saveUserInfo} from '../utils/request'
 import $ from "webpack-zepto";
 export default {
   components: {
@@ -225,11 +224,6 @@ export default {
         // form_data.append("F_IdCard", that.F_IdCard);
         // form_data.append("FileUrl", file_data);
 
-        // saveUserInfo(form_data,function(data){
-        //     window.localStorage.removeItem("userInfo")
-        // });
-
-        
       }
     },
   },

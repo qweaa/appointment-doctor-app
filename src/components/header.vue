@@ -119,7 +119,6 @@
 <script>
 import {Popup, Toast } from 'vux';
 const {getLocalPoint} = require('../utils/util')
-import {getECAList,getDoctorList,getRecommend} from '../utils/request'
 import $ from "webpack-zepto";
 export default {
     components:{
@@ -213,17 +212,6 @@ export default {
                 if(this.$store.state.local.local.state){
                     var that = this,
                         local = this.$store.state.local.local;
-                    // getECAList({
-                    //     province: local.province,
-                    //     city: local.city,
-                    //     lng: local.lng,
-                    //     lat: local.lat,
-                    //     keyword: that.searchWord
-                    // },function(data){
-                    //     that.searchList.storeList = []
-                    //     console.log("门店",data)
-                    //     that.searchList.storeList = data;
-                    // });
                     this.$api.getDoctorSearchList(this.searchWord).then(data=>{
                         if(data.data){
                             if(data.data.length == 0) this.searchnone = true
@@ -231,17 +219,6 @@ export default {
                             that.searchList.doctorList = data.data;
                         }
                     })
-                    // getDoctorList({
-                    //     province: local.province,
-                    //     city: local.city,
-                    //     rows: 20,
-                    //     page: 1,
-                    //     keyword: that.searchWord
-                    // },function(data){
-                    //     that.searchList.doctorList = []
-                    //     console.log("医师",data)
-                    //     that.searchList.doctorList = data;
-                    // });
                 }else{
                     this.showToast = true;
                     this.toastText = '定位失败，无法搜索到您身边的门店'
@@ -259,10 +236,6 @@ export default {
                         that.searchList.storeList = data.data;
                     }
                 })
-                // getRecommend(local.province,local.city,local.lng,local.lat,function(data){
-                //     that.searchList.storeList = data;
-                //     console.log('getRecommendInHeader',data)
-                // })
             }
         },
     },

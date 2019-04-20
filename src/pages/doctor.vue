@@ -57,7 +57,6 @@
 import mHeader from '../components/header';
 import schedul from '../components/select-ECA-schedul'
 import {Popup } from 'vux';
-const {getDoctorDetail} = require("../utils/request")
 
 export default {
     components:{
@@ -91,10 +90,6 @@ export default {
             console.log(data.data)
             that.info = data.data[0]
         })
-        // getDoctorDetail(this.doctorId,function(data){
-        //     console.log(data)
-        //     that.info = data
-        // })
     }
 }
 </script>
